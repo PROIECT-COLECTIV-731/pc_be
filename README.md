@@ -2,7 +2,7 @@
 Proiect Colectiv Back End
 
 Va luati proiectul pe local folosind comanda:
-git clone https://github.com/ImCODEX/pc_be.git
+git clone https://github.com/PROIECT-COLECTIV-731/pc_be.git
 
 CAND VA APUCATI DE UN TASK LUATI DOAR ATUNCI PROIECTUL PE LOCAL!!!
 
