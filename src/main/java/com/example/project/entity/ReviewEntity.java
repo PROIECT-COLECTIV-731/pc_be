@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Review {
+public class ReviewEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -25,10 +25,10 @@ public class Review {
     private int rating;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Book book;
+    private BookEntity book;
 
 
 
