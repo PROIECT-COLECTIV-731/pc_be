@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.util.List;
 
 
 @Entity
@@ -35,20 +36,20 @@ public class BookEntity {
     @Column(name = "publication_year")
     private int publicationYear;
 
-    //to do
     @ManyToOne
     @JoinColumn(name="domain_id", nullable=false)
     private DomainEntity domain;
 
-    //to do
     @ManyToOne
     @JoinColumn(name="publisher_id", nullable=false)
     private PublisherEntity publisher;
 
-    //to do
-    @ManyToOne
-    @JoinColumn(name="category_id", nullable=false)
-    private CategoryEntity category;
+    @ManyToMany
+    @JoinTable(
+            name = "book_category",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private List<CategoryEntity> bookCategories;
 
     @Column(name = "summary")
     private String summary;

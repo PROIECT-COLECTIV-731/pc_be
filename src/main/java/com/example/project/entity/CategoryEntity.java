@@ -18,7 +18,7 @@ public class CategoryEntity {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy="category")
+    @ManyToMany(mappedBy = "bookCategories")
     @JsonIgnore
     private List<BookEntity> categoryBooks;
 }
