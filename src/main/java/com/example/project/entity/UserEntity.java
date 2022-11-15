@@ -23,4 +23,8 @@ public class UserEntity {
 
     @Column
     private String email;
+
+
+    @Column
+    private String password;
 }
