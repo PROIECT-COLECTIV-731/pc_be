@@ -14,4 +14,6 @@ public interface BookRepository extends JpaRepository<BookEntity, Long> {
 
     @Override
     BookEntity save(BookEntity book);
+
+    List<BookEntity> findByTitle(String title);
 }

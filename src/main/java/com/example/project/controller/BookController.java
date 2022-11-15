@@ -24,4 +24,9 @@ public class BookController {
     public ResponseEntity<BookEntity> saveBook(@RequestBody BookEntity book) {
         return ResponseEntity.ok(this.bookService.save(book));
     }
+
+    @GetMapping("/{title}")
+    public ResponseEntity<List<BookEntity>> findBookByTitle(@PathVariable String title) {
+        return ResponseEntity.ok(this.bookService.findByTitle(title));
+    }
 }

@@ -23,4 +23,9 @@ public class BookServiceImpl implements BookService{
             return bookRepository.save(book);
         return null;
     }
+
+    @Override
+    public List<BookEntity> findByTitle(String title) {
+        return this.bookRepository.findByTitle(title);
+    }
 }
