@@ -25,8 +25,8 @@ public class BookController {
         return ResponseEntity.ok(this.bookService.save(book));
     }
 
-    @GetMapping("/{title}")
-    public ResponseEntity<List<BookEntity>> findBookByTitle(@PathVariable String title) {
-        return ResponseEntity.ok(this.bookService.findByTitle(title));
+    @GetMapping("/{id}")
+    public ResponseEntity<BookEntity> findBookById(@PathVariable Long id) {
+        return ResponseEntity.ok(this.bookService.findById(id));
     }
 }

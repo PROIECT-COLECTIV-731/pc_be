@@ -25,7 +25,7 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public List<BookEntity> findByTitle(String title) {
-        return this.bookRepository.findByTitle(title);
+    public BookEntity findById(Long id) {
+        return this.bookRepository.findById(id).orElse(null);
     }
 }

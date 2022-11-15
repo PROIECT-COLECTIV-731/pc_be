@@ -7,5 +7,5 @@ import com.example.project.entity.BookEntity;
 public interface BookService {
     public List<BookEntity> findAll();
     public BookEntity save(BookEntity book);
-    public List<BookEntity> findByTitle(String title);
+    public BookEntity findById(Long id);
 }
