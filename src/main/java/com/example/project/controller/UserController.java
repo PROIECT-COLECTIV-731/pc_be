@@ -4,6 +4,7 @@ import com.example.project.dto.BookDTO;
 import com.example.project.dto.UserDto;
 import com.example.project.entity.BookEntity;
 import com.example.project.entity.UserBookEntity;
+import com.example.project.entity.UserEntity;
 import com.example.project.service.BookService;
 import com.example.project.service.UserBookService;
 import com.example.project.service.UserService;
@@ -34,7 +35,8 @@ public class UserController {
     public ResponseEntity<List<BookDTO>> getBooks(@RequestParam String username) {
             List<UserBookEntity>expiredBooks=userService.getExpiredBooks(username);
             userBookService.deleteUserBooks(expiredBooks);
-            List<BookDTO>books=bookService.bookList(userService.getBooks(username));
+            UserEntity foundUser=userService.findUserByUserName(username);
+            List<BookDTO>books=bookService.bookList(userBookService.getUserBooks(foundUser));
             if(books.size()>0)
                 return ResponseEntity.ok().body(books);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

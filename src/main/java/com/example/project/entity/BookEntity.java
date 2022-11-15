@@ -2,6 +2,7 @@ package com.example.project.entity;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Data
+@Getter
 @Table(name = "Book")
 @AllArgsConstructor
 @NoArgsConstructor

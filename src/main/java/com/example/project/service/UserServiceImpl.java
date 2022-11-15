@@ -53,7 +53,6 @@ public class UserServiceImpl implements UserService{
     public List<BookEntity> getBooks(String username) {
         UserEntity foundUser=findUserByUserName(username);
         List<BookEntity>books=new ArrayList<>();
-
         if(foundUser!=null)
         {
             foundUser.getBooks().forEach(userBook->{books.add(userBook.getBookEntity());});
