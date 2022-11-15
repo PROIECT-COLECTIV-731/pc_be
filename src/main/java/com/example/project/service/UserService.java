@@ -10,5 +10,6 @@ import java.util.List;
 public interface UserService {
     public List<UserDto> findAll();
     UserEntity findUserByUserName(String username);
-    List<BookEntity> getUserBooks(String username);
+    List<UserBookEntity> getExpiredBooks(String username);
+    List<BookEntity> getBooks(String username);
 }

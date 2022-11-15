@@ -31,6 +31,22 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
+    public void delete(BookEntity book) {
+        if(book!=null)
+        {
+            bookRepository.delete(book);
+        }
+    }
+
+    @Override
+    public void deleteAll(List<BookEntity> books) {
+        if(books.size()>0)
+        {
+            books.forEach(this::delete);
+        }
+    }
+
+    @Override
     public BookDTO convertEntityToDTO(BookEntity book) {
         List<String>categories=new ArrayList<>();
         book.getBookCategories().forEach(categoryEntity -> categories.add(categoryEntity.getName()));

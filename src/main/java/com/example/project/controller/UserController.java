@@ -3,7 +3,9 @@ package com.example.project.controller;
 import com.example.project.dto.BookDTO;
 import com.example.project.dto.UserDto;
 import com.example.project.entity.BookEntity;
+import com.example.project.entity.UserBookEntity;
 import com.example.project.service.BookService;
+import com.example.project.service.UserBookService;
 import com.example.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,16 +20,20 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
+    private UserBookService userBookService;
+    @Autowired
     private BookService bookService;
 
     @GetMapping("/get-all")
     public ResponseEntity<List<UserDto>> getAll() {
         return ResponseEntity.ok(userService.findAll());
     }
+    //gets the books of a user
     @GetMapping("/getBooks")
     public ResponseEntity<List<BookDTO>> getBooks(@RequestParam String username) {
-            List<BookEntity>userBooks=userService.getUserBooks(username);
-            List<BookDTO>books=bookService.bookList(userBooks);
+            List<UserBookEntity>expiredBooks=userService.getExpiredBooks(username);
+            userBookService.deleteUserBooks(expiredBooks);
+            List<BookDTO>books=bookService.bookList(userService.getBooks(username));
             if(books.size()>0)
                 return ResponseEntity.ok().body(books);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
