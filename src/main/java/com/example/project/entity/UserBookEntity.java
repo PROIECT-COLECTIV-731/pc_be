@@ -17,7 +17,6 @@ import java.time.LocalDate;
 public class UserBookEntity {
     @EmbeddedId
     private UserBookID userBookID=new UserBookID();
-
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userID")
     private UserEntity userEntity;

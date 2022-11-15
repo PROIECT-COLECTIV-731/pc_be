@@ -23,7 +23,6 @@ public class ReviewEntity {
 
     @Column(name = "rating")
     private int rating;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
 

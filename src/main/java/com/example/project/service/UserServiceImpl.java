@@ -30,7 +30,6 @@ public class UserServiceImpl implements UserService{
         return userMapper.entitiesToDtos(this.userRepository.findAll());
     }
 
-
     @Override
     public UserEntity findUserByUserName(String username)
     {

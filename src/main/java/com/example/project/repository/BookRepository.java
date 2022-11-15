@@ -13,7 +13,6 @@ public interface BookRepository extends JpaRepository<BookEntity, Long> {
 
     @Override
     BookEntity save(BookEntity book);
-
     @Override
     void delete(BookEntity book);
 }

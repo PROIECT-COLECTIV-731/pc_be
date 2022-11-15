@@ -12,4 +12,5 @@ public interface UserMapper {
     public UserDto entityToDto(UserEntity entity);
     public List<UserEntity> dtosToEntities(List<UserEntity> entities);
     public List<UserDto> entitiesToDtos(List<UserEntity> dtos);
+
 }

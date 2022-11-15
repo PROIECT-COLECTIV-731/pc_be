@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 @Embeddable
 public class UserBookID implements Serializable {
+
     @Column(name="book_id")
     private Long bookID;
     @Column(name="user_id")

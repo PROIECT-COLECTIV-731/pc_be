@@ -48,7 +48,6 @@ public class ReviewService {
         return findAll().stream().filter(review -> review.getBook().equals(book)).collect(Collectors.toList());
     }
 
-
     public ReviewEntity convertReviewDTOToEntity(ReviewDTO reviewDTO)
     {
         UserEntity user=userService.findUserByUserName(reviewDTO.getUsername());

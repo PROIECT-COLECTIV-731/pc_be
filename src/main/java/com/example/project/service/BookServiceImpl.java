@@ -37,7 +37,6 @@ public class BookServiceImpl implements BookService{
             bookRepository.delete(book);
         }
     }
-
     @Override
     public void deleteAll(List<BookEntity> books) {
         if(books.size()>0)

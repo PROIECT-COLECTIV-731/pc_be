@@ -10,6 +10,5 @@ public interface BookService {
      void delete(BookEntity book);
      void deleteAll(List<BookEntity>books);
     public BookDTO convertEntityToDTO(BookEntity book);
-
     public List<BookDTO> bookList(List<BookEntity> books);
 }

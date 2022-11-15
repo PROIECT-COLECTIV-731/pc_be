@@ -9,7 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class ReviewDTO {
-
     private String description;
     private int rating;
     private String username;

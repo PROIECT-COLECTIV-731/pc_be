@@ -19,7 +19,6 @@ public class BookController {
     public ResponseEntity<List<BookEntity>> getAll() {
         return ResponseEntity.ok(this.bookService.findAll());
     }
-
     @PostMapping("/add")
     public ResponseEntity<BookEntity> saveBook(@RequestBody BookEntity book) {
         return ResponseEntity.ok(this.bookService.save(book));

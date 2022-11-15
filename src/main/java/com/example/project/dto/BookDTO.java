@@ -18,12 +18,9 @@ import java.util.List;
 public class BookDTO {
 
     private Long ISBN;
-
     private String author;
-
     private String title;
     private int publicationYear;
-
     private String domain;
     private String publisher;
     private List<String> bookCategories;

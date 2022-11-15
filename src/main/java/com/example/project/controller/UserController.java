@@ -28,7 +28,8 @@ public class UserController {
     public ResponseEntity<List<UserDto>> getAll() {
         return ResponseEntity.ok(userService.findAll());
     }
-    //gets the books of a user
+    
+    //gets the books of a user and deleted the expired ones
     @GetMapping("/getBooks")
     public ResponseEntity<List<BookDTO>> getBooks(@RequestParam String username) {
             List<UserBookEntity>expiredBooks=userService.getExpiredBooks(username);

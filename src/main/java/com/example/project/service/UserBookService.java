@@ -12,7 +12,6 @@ import java.util.List;
 public class UserBookService {
     @Autowired
     private UserBookRepository userBookRepository;
-
     public void deleteUserBooks(List<UserBookEntity> books)
     {
         userBookRepository.deleteAll(books);

@@ -58,7 +58,6 @@ public class BookEntity {
     @OneToMany(mappedBy = "bookEntity")
     private List<UserBookEntity>books;
 }
-
 //    a admin user
 //        I want to add books with the following attributes and restrictions:
 //        - author (minim 1, mandatory, string)

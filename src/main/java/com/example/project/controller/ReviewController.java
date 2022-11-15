@@ -40,6 +40,7 @@ public class ReviewController {
     @GetMapping("/reviews")
     public List<ReviewDTO> getReviews()
     {
+
         return reviewService.getReviews();
 
     }

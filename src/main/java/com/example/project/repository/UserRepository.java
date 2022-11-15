@@ -12,7 +12,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
     @Override
     List<UserEntity> findAll();
-
     UserEntity findUserById(Long id);
 
 
