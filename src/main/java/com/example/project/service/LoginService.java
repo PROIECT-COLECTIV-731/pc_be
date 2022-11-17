@@ -24,7 +24,7 @@ public class LoginService {
             if (userEntity != null && email.contains("@stud.ubbcluj.ro"))
                 return "userAccepted";
             else if (userEntity != null && email.contains("@ubbcluj.ro")) {
-                return "adminAcceoted";
+                return "adminAccepted";
             }
             return null;
         }

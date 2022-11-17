@@ -13,8 +13,8 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
     private UserMapper userMapper;
-
 
     @Override
     public List<UserDto> findAll() {
