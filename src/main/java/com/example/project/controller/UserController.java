@@ -23,7 +23,7 @@ public class UserController {
     public ResponseEntity<UserDto> findUserByEmailAndPassword(@PathVariable String email, String password) {
         return ResponseEntity.ok(this.userService.findByEmailAndPassword(email, password));
     }
-    @PostMapping("/user")
+    @PostMapping("/login")
     public String login(@RequestBody String email, String password){return userService.login(email, password);}
 
 }
