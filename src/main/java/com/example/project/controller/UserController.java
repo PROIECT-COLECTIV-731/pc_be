@@ -24,6 +24,7 @@ public class UserController {
         return ResponseEntity.ok(this.userService.findByEmailAndPassword(email, password));
     }
     @PostMapping("/login")
-    public String login(@RequestBody String email, String password){return userService.login(email, password);}
+    public ResponseEntity<String> login(@RequestBody String email, String password)
+    {return ResponseEntity.ok(userService.login(email, password));}
 
 }
