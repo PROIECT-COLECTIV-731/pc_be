@@ -4,9 +4,7 @@ import com.example.project.dto.UserDto;
 import com.example.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,5 +18,13 @@ public class UserController {
     public ResponseEntity<List<UserDto>> getAll() {
         return ResponseEntity.ok(userService.findAll());
     }
+
+    @GetMapping("/{email}/{password}")
+    public ResponseEntity<UserDto> findUserByEmailAndPassword(@PathVariable String email, String password) {
+        return ResponseEntity.ok(this.userService.findByEmailAndPassword(email, password));
+    }
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody String email, String password)
+    {return ResponseEntity.ok(userService.login(email, password));}
 
 }
