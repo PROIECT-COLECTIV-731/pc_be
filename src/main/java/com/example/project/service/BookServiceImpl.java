@@ -2,6 +2,9 @@ package com.example.project.service;
 
 import com.example.project.repository.BookRepository;
 import com.example.project.entity.BookEntity;
+import com.example.project.repository.CategoryRepository;
+import com.example.project.repository.DomainRepository;
+import com.example.project.repository.PublisherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
