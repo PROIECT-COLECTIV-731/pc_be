@@ -3,6 +3,7 @@ import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "Book")
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookEntity {
