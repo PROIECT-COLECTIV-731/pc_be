@@ -16,7 +16,10 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping("/add")
-    public ResponseEntity<CategoryEntity> addCategory(@RequestBody CategoryEntity category){
+    public ResponseEntity addCategory(@RequestBody CategoryEntity category){
+        if(categoryService.findPublisherByName(category.getName()) != null){
+            return ResponseEntity.badRequest().body("Error! Category with name " + category.getName() + " already exists!");
+        }
         return  ResponseEntity.ok(this.categoryService.addCategory(category));
     }
 }

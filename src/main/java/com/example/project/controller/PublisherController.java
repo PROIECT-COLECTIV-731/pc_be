@@ -17,7 +17,10 @@ public class PublisherController {
     private PublisherService publisherService;
 
     @PostMapping("/add")
-    public ResponseEntity<PublisherEntity> addPublisher(@RequestBody PublisherEntity publisher){
+    public ResponseEntity addPublisher(@RequestBody PublisherEntity publisher){
+        if(publisherService.findPublisherByName(publisher.getName()) != null){
+            return ResponseEntity.badRequest().body("Error! Publisher with name " + publisher.getName() + " already exists!");
+        }
         return ResponseEntity.ok(this.publisherService.addPublisher(publisher));
     }
 }
