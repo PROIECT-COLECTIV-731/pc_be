@@ -1,6 +1,7 @@
 package com.example.project.service;
 
 import com.example.project.dto.UserDto;
+import com.example.project.entity.UserEntity;
 import com.example.project.mapper.UserMapper;
 import com.example.project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,11 @@ public class UserServiceImpl implements UserService{
             System.out.println(ex.getMessage());
             return null;
         }
+    }
+
+    @Override
+    public UserDto findByEmail(String email){
+        return userMapper.entityToDto(this.userRepository.findByEmail(email));
     }
 
 }
