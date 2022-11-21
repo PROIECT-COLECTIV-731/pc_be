@@ -36,9 +36,10 @@ public class UserController {
             List<UserBookEntity>expiredBooks=userService.getExpiredBooks(username);
             userBookService.deleteUserBooks(expiredBooks);
             UserEntity foundUser=userService.findUserByUserName(username);
+            if(foundUser!=null){
             List<BookDTO>books=bookService.convertEntityListToDTOList(userBookService.getUserBooks(foundUser));
             if(books.size()>0)
-                return ResponseEntity.ok().body(books);
+                return ResponseEntity.ok().body(books);}
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
