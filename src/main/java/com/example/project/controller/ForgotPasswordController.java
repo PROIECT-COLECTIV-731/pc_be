@@ -5,6 +5,7 @@ import com.example.project.repository.UserRepository;
 import com.example.project.service.EmailSenderService;
 import com.example.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,9 +20,11 @@ public class ForgotPasswordController {
     private EmailSenderService emailSenderService;
 
     @GetMapping("/{email}")
-    public UserDto getPasswordByEmail(@PathVariable String email){
-        emailSenderService.sendEmail(email, "Current Password", userService.findByEmail(email).getPassword());
-        return userService.findByEmail(email);
+    public ResponseEntity<UserDto> getPasswordByEmail(@PathVariable String email){
+        UserDto user = userService.findByEmail(email);
+        if(user == null) return ResponseEntity.status(404).build();
+        emailSenderService.sendEmail(email, "Current Password", user.getPassword());
+        return ResponseEntity.ok(user);
     }
 
 }
