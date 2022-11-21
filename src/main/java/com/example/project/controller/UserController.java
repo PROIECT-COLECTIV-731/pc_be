@@ -31,12 +31,12 @@ public class UserController {
     }
     
     //gets the books of a user and deleted the expired ones
-    @GetMapping("/getBooks")
+    @GetMapping("/user-books")
     public ResponseEntity<List<BookDTO>> getBooks(@RequestParam String username) {
             List<UserBookEntity>expiredBooks=userService.getExpiredBooks(username);
             userBookService.deleteUserBooks(expiredBooks);
             UserEntity foundUser=userService.findUserByUserName(username);
-            List<BookDTO>books=bookService.bookList(userBookService.getUserBooks(foundUser));
+            List<BookDTO>books=bookService.convertEntityListToDTOList(userBookService.getUserBooks(foundUser));
             if(books.size()>0)
                 return ResponseEntity.ok().body(books);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

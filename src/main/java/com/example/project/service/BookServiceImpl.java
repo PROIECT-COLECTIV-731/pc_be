@@ -61,7 +61,7 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public List<BookDTO> bookList(List<BookEntity> books) {
+    public List<BookDTO> convertEntityListToDTOList(List<BookEntity> books) {
         List<BookDTO>boookList=new ArrayList<>();
         if(books!=null){
             books.forEach(bookEntity -> boookList.add(convertEntityToDTO(bookEntity)));

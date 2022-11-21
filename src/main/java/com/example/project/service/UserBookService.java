@@ -18,7 +18,8 @@ public class UserBookService {
     private UserBookRepository userBookRepository;
     public void deleteUserBooks(List<UserBookEntity> books)
     {
-        userBookRepository.deleteAll(books);
+        if(books.size()>0){
+        userBookRepository.deleteAll(books);}
     }
     public List<UserBookEntity> getAll()
     {
