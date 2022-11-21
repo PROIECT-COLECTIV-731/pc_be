@@ -13,11 +13,33 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
     private UserMapper userMapper;
-
 
     @Override
     public List<UserDto> findAll() {
         return userMapper.entitiesToDtos(this.userRepository.findAll());
     }
+
+    @Override
+    public UserDto findByEmailAndPassword(String email, String password) {
+        return userMapper.entityToDto(this.userRepository.findByEmailAndPassword(email, password));
+    }
+    @Override
+    public String login(String email, String password){
+        try {
+            UserDto user = findByEmailAndPassword(email, password);
+            if (user != null && email.contains("@stud.ubbcluj.ro"))
+                return "userAccepted";
+            else if (user != null && email.contains("@ubbcluj.ro")) {
+                return "adminAccepted";
+            }
+            return null;
+        }
+        catch (Exception ex){
+            System.out.println(ex.getMessage());
+            return null;
+        }
+    }
+
 }
