@@ -1,7 +1,9 @@
 package com.example.project.controller;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+ c
+import com.example.project.entity.UserEntity;
+import com.example.project.repository.UserRepository;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @ResponseBody
@@ -11,8 +13,8 @@ public class ForgotPasswordController {
     private UserRepository repository;
 
     @GetMapping("/email")
-    public User getPasswordByEmail(@PathVariable string email){
-        return repository.findById(id);
+    public UserEntity getPasswordByEmail(@PathVariable Long email){
+        return repository.findUserById(email);
     }
 
 }
