@@ -1,6 +1,5 @@
 package com.example.project.entity;
 
-
 import lombok.Data;
 
 import javax.persistence.*;
@@ -34,3 +33,7 @@ public class UserEntity {
     private List<ReviewEntity> reviews;
 
 }
+    @Column
+    private String password;
+}
+

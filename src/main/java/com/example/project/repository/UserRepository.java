@@ -9,10 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, String> {
     @Override
     List<UserEntity> findAll();
-    UserEntity findUserById(Long id);
 
+    UserEntity findByEmailAndPassword(String email, String password);
 
+    UserEntity findByEmail(String email);
 }
