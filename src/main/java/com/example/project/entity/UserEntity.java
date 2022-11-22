@@ -1,6 +1,5 @@
 package com.example.project.entity;
 
-
 import lombok.Data;
 
 import javax.persistence.*;
@@ -23,4 +22,8 @@ public class UserEntity {
 
     @Column
     private String email;
+
+
+    @Column
+    private String password;
 }
