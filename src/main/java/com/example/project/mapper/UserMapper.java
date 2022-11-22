@@ -2,7 +2,6 @@ package com.example.project.mapper;
 
 import com.example.project.dto.UserDto;
 import com.example.project.entity.UserEntity;
-import com.example.project.service.UserService;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -17,8 +16,7 @@ public interface UserMapper {
 
     @Mappings({
             @Mapping(source = "id", target = "id"),
-            @Mapping(source = "firstName", target = "firstName"),
-            @Mapping(source = "lastName", target = "lastName"),
+            @Mapping(source = "username", target = "username"),
             @Mapping(source = "email", target="email"),
             @Mapping(source = "password", target="password")
     })
@@ -26,8 +24,7 @@ public interface UserMapper {
 
     @Mappings({
             @Mapping(source = "id", target = "id"),
-            @Mapping(source = "firstName", target = "firstName"),
-            @Mapping(source = "lastName", target = "lastName"),
+            @Mapping(source = "username", target = "username"),
             @Mapping(source = "email", target ="email"),
             @Mapping(source = "password", target="password")
     })

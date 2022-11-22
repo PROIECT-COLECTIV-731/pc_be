@@ -1,15 +1,16 @@
-package com.example.project.service;
+package com.example.project.service.implementations;
 
 import com.example.project.dto.UserDto;
 import com.example.project.mapper.UserMapper;
 import com.example.project.repository.UserRepository;
+import com.example.project.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
