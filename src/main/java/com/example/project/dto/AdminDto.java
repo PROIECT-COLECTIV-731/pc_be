@@ -6,7 +6,7 @@ import lombok.Data;
 
 import javax.persistence.Column;
 @Data
-public class UserDto {
+public class AdminDto {
     private Long id;
     private String firstName;
 
@@ -15,5 +15,7 @@ public class UserDto {
     private String email;
 
     private String password;
+
+
 
 }

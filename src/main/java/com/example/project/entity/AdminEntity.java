@@ -4,11 +4,10 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-
 @Entity
 @Data
-@Table(name = "Users")
-public class UserEntity {
+@Table(name = "Admin")
+public class AdminEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,4 +24,6 @@ public class UserEntity {
 
     @Column
     private String password;
+
+
 }

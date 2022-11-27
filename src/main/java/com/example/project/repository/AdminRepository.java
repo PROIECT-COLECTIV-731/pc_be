@@ -1,6 +1,6 @@
 package com.example.project.repository;
 
-import com.example.project.entity.UserEntity;
+import com.example.project.entity.AdminEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -8,13 +8,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends CrudRepository<UserEntity, String>
+public interface AdminRepository extends CrudRepository<AdminEntity, String>
 {
     @Override
-    List<UserEntity> findAll();
+    List<AdminEntity> findAll();
 
-    UserEntity findByEmailAndPassword(String email, String password);
+    AdminEntity findByEmailAndPassword(String email, String password);
 
-    UserEntity save(UserEntity u);
+    AdminEntity save(AdminEntity u);
 
 }
