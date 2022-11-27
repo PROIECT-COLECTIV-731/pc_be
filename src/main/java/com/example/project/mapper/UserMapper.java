@@ -10,7 +10,8 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel="spring")
+
 public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
@@ -34,4 +35,5 @@ public interface UserMapper {
     public UserDto entityToDto(UserEntity entity);
     public List<UserEntity> dtosToEntities(List<UserEntity> entities);
     public List<UserDto> entitiesToDtos(List<UserEntity> dtos);
+
 }
