@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,8 +12,9 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "Book")
 @ToString
+@Getter
+@Table(name = "Book")
 @AllArgsConstructor
 @NoArgsConstructor
 public class BookEntity {
@@ -56,6 +58,9 @@ public class BookEntity {
 
     @Column(name = "ranking")
     private float ranking;
+
+    @OneToMany(mappedBy = "bookEntity")
+    private List<UserBookEntity>books;
 }
 
 //    a admin user

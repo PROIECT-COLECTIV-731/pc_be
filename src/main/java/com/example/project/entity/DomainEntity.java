@@ -12,6 +12,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @Table(name = "Domain")
+
 @AllArgsConstructor
 @NoArgsConstructor
 public class DomainEntity {
@@ -26,4 +27,5 @@ public class DomainEntity {
     @OneToMany(mappedBy="domain")
     @JsonIgnore
     private List<BookEntity> domainBooks;
+
 }

@@ -1,5 +1,6 @@
 package com.example.project.controller;
 
+
 import com.example.project.dto.BookDto;
 import com.example.project.entity.BookEntity;
 import com.example.project.service.BookService;
@@ -20,7 +21,7 @@ public class BookController {
     public ResponseEntity<List<BookDto>> getAll() {
         return ResponseEntity.ok(this.bookService.findAll());
     }
-
+  
     @PostMapping("/add")
     public ResponseEntity<BookEntity> saveBook(@RequestBody BookEntity book) {
         return ResponseEntity.ok(this.bookService.save(book));
