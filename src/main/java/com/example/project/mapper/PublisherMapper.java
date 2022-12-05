@@ -2,6 +2,7 @@ package com.example.project.mapper;
 
 import com.example.project.dto.PublisherDto;
 import com.example.project.entity.PublisherEntity;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -13,16 +14,10 @@ import java.util.List;
 public interface PublisherMapper {
     PublisherMapper INSTANCE = Mappers.getMapper(PublisherMapper.class);
 
-    @Mappings({
-            @Mapping(source = "id", target = "id"),
-            @Mapping(source = "name", target = "name")
-    })
+    @Mapping(target = "id")
     public PublisherEntity dtoToEntity(PublisherDto dto);
 
-    @Mappings({
-            @Mapping(source = "id", target = "id"),
-            @Mapping(source = "name", target = "name")
-    })
+    @InheritInverseConfiguration
     public PublisherDto entityToDto(PublisherEntity entity);
     public List<PublisherEntity> dtosToEntities(List<PublisherEntity> entities);
     public List<PublisherDto> entitiesToDtos(List<PublisherEntity> dtos);

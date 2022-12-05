@@ -18,6 +18,7 @@ import java.util.List;
 public class UserEntity {
 
     @Id
+    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
@@ -33,6 +34,21 @@ public class UserEntity {
     @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewEntity> reviewEntities;
 
-    @OneToMany(mappedBy = "user")
-    List<BorrowEntity> borrowStatus;
+    @ManyToMany
+    @JoinTable(
+            name="borrow",
+            joinColumns = @JoinColumn(name="idUser", referencedColumnName = "ID"),
+            inverseJoinColumns= @JoinColumn(name="idBook", referencedColumnName = "ID")
+    )
+    List<BookEntity> borrowed;
+
+    public void addBorrowedBook(BookEntity book) {
+        this.borrowed.add(book);
+        book.getBorrowedBy().add(this);
+    }
+
+    public void removeBorrowedBook(BookEntity book) {
+        this.borrowed.remove(book);
+        book.getBorrowedBy().remove(this);
+    }
 }

@@ -2,6 +2,7 @@ package com.example.project.mapper;
 
 import com.example.project.dto.CategoryDto;
 import com.example.project.entity.CategoryEntity;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -13,18 +14,10 @@ import java.util.List;
 public interface CategoryMapper {
     CategoryMapper INSTANCE = Mappers.getMapper(CategoryMapper.class);
 
-    @Mappings({
-            @Mapping(source = "id", target = "id"),
-            @Mapping(source = "name", target = "name"),
-            @Mapping(source = "books", target = "books")
-    })
+    @Mapping(target = "id")
     public CategoryEntity dtoToEntity(CategoryDto dto);
 
-    @Mappings({
-            @Mapping(source = "id", target = "id"),
-            @Mapping(source = "name", target = "name"),
-            @Mapping(source = "books", target = "books")
-    })
+    @InheritInverseConfiguration
     public CategoryDto entityToDto(CategoryEntity entity);
     public List<CategoryEntity> dtosToEntities(List<CategoryEntity> entities);
     public List<CategoryDto> entitiesToDtos(List<CategoryEntity> dtos);

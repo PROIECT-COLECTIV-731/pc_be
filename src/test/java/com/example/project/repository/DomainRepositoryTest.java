@@ -13,7 +13,6 @@ class DomainRepositoryTest extends DatabaseMockupForTests {
 
     @Test
     void findAll() {
-        System.out.println(this.domains);
         assert (this.domains.equals(this.domainRepository.findAll()));
     }
 

@@ -2,13 +2,14 @@ package com.example.project.dto;
 
 
 import com.example.project.entity.CategoryEntity;
+import com.example.project.entity.UserEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(exclude="categories")
+@EqualsAndHashCode(exclude={"categories", "borrowedBy"})
 public class BookDto {
     private int id;
 
@@ -22,4 +23,5 @@ public class BookDto {
     private int id_domain;
     private int id_publisher;
     private List<CategoryEntity> categories;
+    private List<UserEntity> borrowedBy;
 }

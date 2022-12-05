@@ -45,6 +45,18 @@ public abstract class DatabaseMockupForTests {
                 .password("pass")
                 .build()));
 
+        this.users.add(this.userRepository.save(UserEntity.builder()
+                .email("email@stud.ubbcluj.ro")
+                .username("username")
+                .password("passUser")
+                .build()));
+
+        this.users.add(this.userRepository.save(UserEntity.builder()
+                .email("email@ubbcluj.ro")
+                .username("username")
+                .password("passAdmin")
+                .build()));
+
         this.domains.add(this.domainRepository.save(DomainEntity.builder()
                 .name("SF")
                 .build()));

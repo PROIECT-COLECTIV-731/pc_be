@@ -14,7 +14,6 @@ class CategoryRepositoryTest extends DatabaseMockupForTests {
 
     @Test
     void findAll() {
-        System.out.println(this.categories);
         assert (this.categories.equals(this.categoryRepository.findAll()));
     }
 

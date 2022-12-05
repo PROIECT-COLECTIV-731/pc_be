@@ -17,7 +17,6 @@ class BookRepositoryTest extends DatabaseMockupForTests {
 
     @Test
     void findBookEntityByTitle() {
-        System.out.println(this.books);
         assert(this.books.get(2).equals(this.bookRepository.findBookEntityByTitle("Das Parfum").get(0)));
     }
 

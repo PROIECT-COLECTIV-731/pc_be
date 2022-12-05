@@ -4,14 +4,13 @@ import com.example.project.DatabaseMockupForTests;
 import com.example.project.dto.BookDto;
 import com.example.project.dto.CategoryDto;
 import com.example.project.entity.BookEntity;
-import com.example.project.entity.CategoryEntity;
 import com.example.project.mapper.BookMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BookServiceImplTest extends DatabaseMockupForTests {
 
@@ -25,7 +24,7 @@ class BookServiceImplTest extends DatabaseMockupForTests {
     void getAllCategories() {
         BookEntity book = this.books.get(0);
         List<CategoryDto> result =  bookService.getAllCategories(book.getId());
-        assert (result.contains(CategoryMapper.entityToDto(this.categories.get(0))));
+        assert (result.contains(CategoryMapper.INSTANCE.entityToDto(this.categories.get(0))));
     }
 
     @Test
@@ -38,7 +37,7 @@ class BookServiceImplTest extends DatabaseMockupForTests {
     @Test
     void findBookEntityByPublisher() {
         List<BookDto> result = this.bookService.findBookEntityByPublisherEntity(this.publishers.get(0).getId());
-        assert (result.contains(BookMapper.INSTANCE.entityToDto(this.books.get(0))));
+        assertTrue(result.contains(BookMapper.INSTANCE.entityToDto(this.books.get(0))));
         assert (result.contains(BookMapper.INSTANCE.entityToDto(this.books.get(1))));
         assert (result.contains(BookMapper.INSTANCE.entityToDto(this.books.get(2))));
     }

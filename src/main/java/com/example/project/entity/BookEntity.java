@@ -49,8 +49,13 @@ public class BookEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private PublisherEntity publisherEntity;
 
-    @OneToMany(mappedBy = "book")
-    List<BorrowEntity> borrowStatus;
+    @ManyToMany
+    @JoinTable(
+            name="borrow",
+            joinColumns = @JoinColumn(name="idBook", referencedColumnName = "ID"),
+            inverseJoinColumns = @JoinColumn(name="idUser", referencedColumnName = "ID")
+    )
+    List<UserEntity> borrowedBy;
 
     @ManyToMany
     @JoinTable(
