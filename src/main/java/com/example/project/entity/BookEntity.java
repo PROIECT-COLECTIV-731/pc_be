@@ -2,8 +2,9 @@ package com.example.project.entity;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Data
+@ToString
 @Getter
 @Table(name = "Book")
 @AllArgsConstructor
@@ -60,6 +62,7 @@ public class BookEntity {
     @OneToMany(mappedBy = "bookEntity")
     private List<UserBookEntity>books;
 }
+
 //    a admin user
 //        I want to add books with the following attributes and restrictions:
 //        - author (minim 1, mandatory, string)
