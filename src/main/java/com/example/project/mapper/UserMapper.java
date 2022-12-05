@@ -20,7 +20,8 @@ public interface UserMapper {
             @Mapping(source = "firstName", target = "firstName"),
             @Mapping(source = "lastName", target = "lastName"),
             @Mapping(source = "email", target="email"),
-            @Mapping(source = "password", target="password")
+            @Mapping(source = "password", target="password"),
+            @Mapping(source = "permission", target="permission")
     })
     public UserEntity dtoToEntity(UserDto dto);
 
@@ -29,7 +30,8 @@ public interface UserMapper {
             @Mapping(source = "firstName", target = "firstName"),
             @Mapping(source = "lastName", target = "lastName"),
             @Mapping(source = "email", target ="email"),
-            @Mapping(source = "password", target="password")
+            @Mapping(source = "password", target="password"),
+            @Mapping(source = "permission", target="permission")
     })
     public UserDto entityToDto(UserEntity entity);
     public List<UserEntity> dtosToEntities(List<UserEntity> entities);

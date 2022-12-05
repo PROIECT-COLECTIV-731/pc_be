@@ -25,4 +25,7 @@ public class UserEntity {
 
     @Column
     private String password;
+
+    @Column
+    private String permission;
 }

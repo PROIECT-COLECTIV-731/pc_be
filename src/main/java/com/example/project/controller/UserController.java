@@ -29,4 +29,9 @@ public class UserController {
     public ResponseEntity<String> login(@RequestBody String email, String password)
     {return ResponseEntity.ok(userService.login(email, password));}
 
+    @GetMapping("/permission/{email}")
+    public ResponseEntity<String> getPermission(@PathVariable String email) {
+        return ResponseEntity.ok(this.userService.findByEmail(email).getPermission());
+    }
+
 }
