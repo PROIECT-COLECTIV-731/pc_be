@@ -25,7 +25,7 @@ public class ReviewController {
     @PostMapping("/review")
     public ResponseEntity<String> addReview( @RequestBody ReviewDTO reviewDTO)
     {
-        System.out.println(reviewDTO);
+
         ReviewEntity review=reviewService.convertReviewDTOToEntity(reviewDTO);
         try{
         reviewService.save(review);
