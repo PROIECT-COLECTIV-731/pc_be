@@ -18,10 +18,9 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<BookDTO>> getAll() {
+    public ResponseEntity<List<BookEntity>> getAll() {
         return ResponseEntity.ok(this.bookService.findAll());
     }
-  
     @PostMapping("/add")
     public ResponseEntity<BookEntity> saveBook(@RequestBody BookEntity book) {
         return ResponseEntity.ok(this.bookService.save(book));

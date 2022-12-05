@@ -13,7 +13,6 @@ public interface UserService {
     List<UserDto> findAll();
 
     UserDto findByEmailAndPassword(String email, String password);
-
     String login(String email, String password);
 
 

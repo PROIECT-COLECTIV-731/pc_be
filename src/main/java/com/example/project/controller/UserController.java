@@ -4,6 +4,7 @@ import com.example.project.dto.BookDTO;
 import com.example.project.dto.UserDto;
 import com.example.project.entity.UserEntity;
 import com.example.project.entity.BookEntity;
+import com.example.project.entity.ResponseForUserBooks;
 import com.example.project.entity.UserBookEntity;
 import com.example.project.entity.UserEntity;
 import com.example.project.service.BookService;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Base64;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -32,17 +34,20 @@ public class UserController {
     public ResponseEntity<List<UserDto>> getAllUser() {
         return ResponseEntity.ok(userService.findAll());
     }
-    
-    //gets the books of a user and deleted the expired ones
-    @GetMapping("/user-books")
-    public ResponseEntity<List<BookDTO>> getBooks(@RequestParam String username) {
+
+    @GetMapping("/books")
+    public ResponseEntity<ResponseForUserBooks> getBooks(@RequestParam String username) {
             List<UserBookEntity>expiredBooks=userService.getExpiredBooks(username);
             userBookService.deleteUserBooks(expiredBooks);
             UserEntity foundUser=userService.findUserByUserName(username);
             if(foundUser!=null){
             List<BookDTO>books=bookService.convertEntityListToDTOList(userBookService.getUserBooks(foundUser));
-            if(books.size()>0)
-                return ResponseEntity.ok().body(books);}
+            if(books.size()>0){
+                List<String>expiredTitles=new ArrayList<>();
+                expiredBooks.forEach(book->expiredTitles.add(book.getBookEntity().getTitle()));
+                return ResponseEntity.ok().body(new ResponseForUserBooks(books,expiredTitles,"Updated List"));
+            }
+            }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
