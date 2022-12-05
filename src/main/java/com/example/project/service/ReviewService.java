@@ -85,9 +85,9 @@ public class ReviewService {
         BookEntity foundBook=bookService.findBookByISBN(isbn);
         List<ReviewEntity>reviews=getReviewsForBookISBN(isbn);
         float ranking= (float) reviews.stream().mapToInt(ReviewEntity::getRating).average().orElse(0);
-        System.out.println(ranking);
         try{
             foundBook.setRanking(ranking);
+            bookService.save(foundBook);
         }catch (Exception exception)
         {
             throw new RuntimeException("The given book couldn't be found");

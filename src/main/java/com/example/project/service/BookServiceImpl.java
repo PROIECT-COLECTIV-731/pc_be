@@ -1,10 +1,12 @@
 package com.example.project.service;
 
 import com.example.project.dto.BookDTO;
+import com.example.project.entity.DomainEntity;
 import com.example.project.entity.ReviewEntity;
 import com.example.project.entity.UserEntity;
 import com.example.project.repository.BookRepository;
 import com.example.project.entity.BookEntity;
+import com.example.project.repository.DomainRepository;
 import com.example.project.repository.ReviewRepository;
 import com.example.project.repository.UserRepository;
 import org.apache.catalina.User;
@@ -62,6 +64,7 @@ public class BookServiceImpl implements BookService{
                 .publisher(book.getPublisher().getName()).
                 publicationYear(book.getPublicationYear()).
                 bookCategories(categories)
+                .domain(book.getDomain().getName())
                 .build();
     }
 

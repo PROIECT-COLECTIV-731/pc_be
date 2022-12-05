@@ -31,8 +31,6 @@ public class UserEntity {
     private List<UserBookEntity>books;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewEntity> reviews;
-
-}
     @Column
     private String password;
 }
