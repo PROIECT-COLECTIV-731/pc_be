@@ -14,4 +14,6 @@ public class ReviewDTO {
     private String username;
     private String title;
     private String author;
+    private Long isbn;
+
 }

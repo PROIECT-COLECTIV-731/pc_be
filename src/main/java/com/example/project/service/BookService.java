@@ -1,4 +1,5 @@
 package com.example.project.service;
+import java.awt.print.Book;
 import java.util.List;
 
 import com.example.project.dto.BookDTO;
@@ -11,4 +12,5 @@ public interface BookService {
      void deleteAll(List<BookEntity>books);
     public BookDTO convertEntityToDTO(BookEntity book);
     public List<BookDTO> convertEntityListToDTOList(List<BookEntity> books);
+    public BookEntity findBookByISBN(Long isbn);
 }

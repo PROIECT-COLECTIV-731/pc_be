@@ -23,4 +23,5 @@ public class BookController {
     public ResponseEntity<BookEntity> saveBook(@RequestBody BookEntity book) {
         return ResponseEntity.ok(this.bookService.save(book));
     }
+
 }

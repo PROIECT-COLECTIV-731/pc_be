@@ -16,10 +16,12 @@ import java.util.stream.Collectors;
 public class ReviewService {
     private ReviewRepository reviewRepository;
     private UserService userService;
+    private BookService bookService;
     @Autowired
-    public ReviewService(ReviewRepository reviewRepository, UserService userService) {
+    public ReviewService(ReviewRepository reviewRepository, UserService userService,BookService bookService) {
         this.reviewRepository = reviewRepository;
         this.userService = userService;
+        this.bookService=bookService;
     }
 
     public List<ReviewEntity> findAll()
@@ -47,16 +49,20 @@ public class ReviewService {
     {
         return findAll().stream().filter(review -> review.getBook().equals(book)).collect(Collectors.toList());
     }
+    public List<ReviewEntity> getReviewsForBookISBN(Long isbn)
+    {
+        return findAll().stream().filter(review -> review.getBook().getISBN().equals(isbn)).collect(Collectors.toList());
+    }
 
     public ReviewEntity convertReviewDTOToEntity(ReviewDTO reviewDTO)
     {
         UserEntity user=userService.findUserByUserName(reviewDTO.getUsername());
-        // findBookByTileAndAuthor
+        BookEntity book=bookService.findBookByISBN(reviewDTO.getIsbn());
         return  ReviewEntity.builder()
             .description(reviewDTO.getDescription())
             .rating(reviewDTO.getRating())
             .user(user)
-            //.book(book)
+            .book(book)
             .build();
 
     }
@@ -69,8 +75,23 @@ public class ReviewService {
                 .username(review.getUser().getUsername())
                 .author(review.getBook().getAuthor())
                 .title(review.getBook().getTitle())
+                .isbn(review.getBook().getISBN())
                 .build();
 
+    }
+
+    public void updateBookRanking(Long isbn)
+    {
+        BookEntity foundBook=bookService.findBookByISBN(isbn);
+        List<ReviewEntity>reviews=getReviewsForBookISBN(isbn);
+        float ranking= (float) reviews.stream().mapToInt(ReviewEntity::getRating).average().orElse(0);
+        System.out.println(ranking);
+        try{
+            foundBook.setRanking(ranking);
+        }catch (Exception exception)
+        {
+            throw new RuntimeException("The given book couldn't be found");
+        }
     }
 
     public List<ReviewDTO> getReviews()

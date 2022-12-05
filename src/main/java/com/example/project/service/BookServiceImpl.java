@@ -1,21 +1,26 @@
 package com.example.project.service;
 
 import com.example.project.dto.BookDTO;
+import com.example.project.entity.ReviewEntity;
 import com.example.project.entity.UserEntity;
 import com.example.project.repository.BookRepository;
 import com.example.project.entity.BookEntity;
+import com.example.project.repository.ReviewRepository;
 import com.example.project.repository.UserRepository;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Book;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalDouble;
 
 @Service
 public class BookServiceImpl implements BookService{
     @Autowired
     private BookRepository bookRepository;
+
 
 
     @Override
@@ -68,6 +73,14 @@ public class BookServiceImpl implements BookService{
         }
         return boookList;
     }
+
+    @Override
+    public BookEntity findBookByISBN(Long isbn) {
+
+       return bookRepository.findAll().stream().filter(bookEntity -> bookEntity.getISBN().equals(isbn)).findFirst().orElse(null);
+
+    }
+
 
 
 }
