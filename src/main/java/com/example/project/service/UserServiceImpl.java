@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService{
     private UserMapper userMapper;
 
     private final Long MAX_DAYS_TO_BORROW=5L;
-
+    
     @Override
     public List<UserDto> findAll() {
         return userMapper.entitiesToDtos(this.userRepository.findAll());
@@ -79,6 +79,18 @@ public class UserServiceImpl implements UserService{
             System.out.println(ex.getMessage());
             return null;
         }
+    }
+    public boolean email_validator(UserEntity userEntity){
+        return userEntity.getEmail().endsWith("@stud.ubbcluj.ro");
+    }
+    public boolean name_validator(UserEntity userEntity){
+        return userEntity.getFirstName().length() > 0 && userEntity.getLastName().length() > 0;
+    }
+    public boolean password_validator(UserEntity userEntity){
+        return userEntity.getPassword().length()>0;
+    }
+    public UserEntity saveUser(UserEntity userEntity){
+        return userRepository.save(userEntity);
     }
 
     @Override
