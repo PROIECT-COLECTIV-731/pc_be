@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class ResponseForUserBooks {
-    //null if the user doesn't have borrowed books
     private List<BookDTO>userBooks;
     private List<String> expiredBookTitles;
     private String message;
