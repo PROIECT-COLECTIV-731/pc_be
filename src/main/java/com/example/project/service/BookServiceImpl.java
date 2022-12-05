@@ -1,7 +1,7 @@
 package com.example.project.service;
 
 
-import com.example.project.dto.BookDto;
+import com.example.project.dto.BookDTO;
 import com.example.project.repository.BookRepository;
 import com.example.project.entity.BookEntity;
 import com.example.project.dto.BookDTO;
@@ -25,8 +25,8 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public List<BookDto> findAll() {
-        List<BookDto>allBooksDTO=new ArrayList<>();
+    public List<BookDTO> findAll() {
+        List<BookDTO>allBooksDTO=new ArrayList<>();
         this.bookRepository.findAll().forEach(book -> allBooksDTO.add(this.convertEntityToDTO(book)));
         return allBooksDTO;
 
@@ -54,15 +54,15 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public BookDto findById(Long id) {
+    public BookDTO findById(Long id) {
         return this.convertEntityToDTO(this.bookRepository.findById(id).orElse(null));
     }
 
     @Override
-    public BookDto convertEntityToDTO(BookEntity book) {
+    public BookDTO convertEntityToDTO(BookEntity book) {
         List<String>categories=new ArrayList<>();
         book.getBookCategories().forEach(categoryEntity -> categories.add(categoryEntity.getName()));
-        return BookDto.builder().
+        return BookDTO.builder().
         ISBN(book.getISBN()).
         author(book.getAuthor()).
         title(book.getTitle()).
@@ -76,8 +76,8 @@ public class BookServiceImpl implements BookService{
     }
               
     @Override
-    public List<BookDto> convertEntityListToDTOList(List<BookEntity> books) {
-        List<BookDto>boookList=new ArrayList<>();
+    public List<BookDTO> convertEntityListToDTOList(List<BookEntity> books) {
+        List<BookDTO>boookList=new ArrayList<>();
         if(books!=null){
             books.forEach(bookEntity -> boookList.add(convertEntityToDTO(bookEntity)));
         }

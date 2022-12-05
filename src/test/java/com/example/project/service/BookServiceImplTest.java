@@ -1,6 +1,6 @@
 package com.example.project.service;
 
-import com.example.project.dto.BookDto;
+import com.example.project.dto.BookDTO;
 import com.example.project.entity.BookEntity;
 import com.example.project.entity.CategoryEntity;
 import com.example.project.entity.DomainEntity;
@@ -37,25 +37,25 @@ class BookServiceImplTest {
         firstDomain = new DomainEntity(1L, "SomeDomain", List.of());
         firstCategory = new CategoryEntity((1L), "SomeCategory", List.of());
 
-        firstEntity = new BookEntity(1L, 12345L, "First author", "Huba Buba",
-                2012, firstDomain, firstPublisher, List.of(), "Description", 7.75F);
-        secondEntity = new BookEntity(2L, 4534L, "Second author", "Buba Huba",
-                2010, firstDomain, firstPublisher, List.of(), "Different description", 9.75F);
-
-        this.testService = new BookServiceImpl(testBookRepository);
+//        firstEntity = new BookEntity(1L, 12345L, "First author", "Huba Buba",
+//                2012, firstDomain, firstPublisher, List.of(), "Description", 7.75F);
+//        secondEntity = new BookEntity(2L, 4534L, "Second author", "Buba Huba",
+//                2010, firstDomain, firstPublisher, List.of(), "Different description", 9.75F);
+//
+//        this.testService = new BookServiceImpl(testBookRepository);
     }
 
     @Test
     void findById() {
         when(testBookRepository.findById(firstEntity.getId())).thenReturn(Optional.of(firstEntity));
 
-        final BookDto result =testService.findById(1L);
+        final BookDTO result =testService.findById(1L);
 
         assertEquals(result.getISBN(), firstEntity.getISBN());
 
         when(testBookRepository.findById(secondEntity.getId())).thenReturn(Optional.of(secondEntity));
 
-        final BookDto secondResult =testService.findById(2L);
+        final BookDTO secondResult =testService.findById(2L);
 
         assertEquals(secondResult.getISBN(), secondEntity.getISBN());
 

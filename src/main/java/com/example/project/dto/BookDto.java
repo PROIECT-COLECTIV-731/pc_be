@@ -8,7 +8,7 @@ import java.util.List;
 
 @Builder
 @Getter
-public class BookDto {
+public class BookDTO {
     private Long ISBN;
 
     private String author;
