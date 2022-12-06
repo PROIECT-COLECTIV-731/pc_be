@@ -29,7 +29,7 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public BookSearchDTO searchBook(@RequestParam String author, String title, int year, Long isbn, CategoryEntity categorie, DomainEntity domain){
-        return this.bookService.search(author,title,year,isbn,categorie, domain);
+    public List<BookSearchDTO> searchBook(@RequestParam String word){
+        return this.bookService.search(word);
     }
 }

@@ -1,14 +1,14 @@
 package com.example.project.service;
 
 import com.example.project.dto.BookSearchDTO;
-import com.example.project.entity.CategoryEntity;
-import com.example.project.entity.DomainEntity;
 import com.example.project.repository.BookRepository;
 import com.example.project.entity.BookEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService{
@@ -28,10 +28,36 @@ public class BookServiceImpl implements BookService{
         return null;
     }
 
-    @Override
-    public BookSearchDTO search(String author, String title, int year, Long isbn, CategoryEntity categorie, DomainEntity domain ){
+    public BookSearchDTO convertToDTO(BookEntity book){
+        return BookSearchDTO.builder()
+                .ISBN(book.getISBN())
+                .author(book.getAuthor())
+                .title(book.getTitle())
+                .publicationYear(book.getPublicationYear())
+                .category(book.getCategory())
+                .domain(book.getDomain())
+                .build();
+    }
 
-         if(author != null && title == null && year == 0 && isbn == 0 && categorie == null && domain == null)
+    public List<BookSearchDTO> convertListToDTO(List<BookEntity> bookEntities){
+        return bookEntities.stream().map(this::convertToDTO).collect(Collectors.toList());
+
+    }
+
+    public List<BookSearchDTO> search(String word){
+        if(word == null || word.isBlank() || word.isEmpty())
+            return convertListToDTO(this.bookRepository.findAll());
+        List<BookSearchDTO> returnList = new ArrayList<>();
+
+
+        for(BookEntity book : this.bookRepository.findAll()){
+            if(book.toString().contains(word))
+                returnList.add(convertToDTO(book));
+
+        }
+        return returnList;
+
+        /* if(author != null && title == null && year == 0 && isbn == 0 && categorie == null && domain == null)
              return (BookSearchDTO) this.bookRepository.findByAuthor(author);
          else if(author == null && title != null && year == 0 && isbn == 0 && categorie == null && domain == null)
              return (BookSearchDTO) this.bookRepository.findByTitle(title);
@@ -138,6 +164,6 @@ public class BookServiceImpl implements BookService{
          else if(author != null && title != null && year != 0 && isbn != 0 && categorie != null  && domain != null)
             return (BookSearchDTO) this.bookRepository.findAll();
 
-        return null;
+        return null;*/
     }
 }
