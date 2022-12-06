@@ -1,21 +1,19 @@
 package com.example.project.mapper;
 
-import com.example.project.dto.UserDto;
-import com.example.project.entity.UserEntity;
-import com.example.project.service.UserService;
+import com.example.project.dto.AdminDto;
+import com.example.project.entity.AdminEntity;
+import com.example.project.service.AdminService;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Mapper(componentModel="spring")
-@Component
-public interface UserMapper {
+@Mapper(componentModel = "spring")
+public interface AdminMapper {
 
-    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
+    AdminMapper INSTANCE = Mappers.getMapper(AdminMapper.class);
 
     @Mappings({
             @Mapping(source = "id", target = "id"),
@@ -24,7 +22,7 @@ public interface UserMapper {
             @Mapping(source = "email", target="email"),
             @Mapping(source = "password", target="password")
     })
-    public UserEntity dtoToEntity(UserDto dto);
+    public AdminEntity dtoToEntity(AdminDto dto);
 
     @Mappings({
             @Mapping(source = "id", target = "id"),
@@ -33,8 +31,7 @@ public interface UserMapper {
             @Mapping(source = "email", target ="email"),
             @Mapping(source = "password", target="password")
     })
-    public UserDto entityToDto(UserEntity entity);
-    public List<UserEntity> dtosToEntities(List<UserEntity> entities);
-    public List<UserDto> entitiesToDtos(List<UserEntity> dtos);
-
+    public AdminDto entityToDto(AdminEntity entity);
+    public List<AdminEntity> dtosToEntities(List<AdminEntity> entities);
+    public List<AdminDto> entitiesToDtos(List<AdminEntity> dtos);
 }

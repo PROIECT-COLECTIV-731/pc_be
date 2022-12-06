@@ -1,5 +1,7 @@
 package com.example.project.controller;
 
+
+import com.example.project.dto.BookDTO;
 import com.example.project.entity.BookEntity;
 import com.example.project.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,15 @@ public class BookController {
     public ResponseEntity<List<BookEntity>> getAll() {
         return ResponseEntity.ok(this.bookService.findAll());
     }
-
     @PostMapping("/add")
     public ResponseEntity saveBook(@RequestBody BookEntity book) {
         if (bookService.findByISBN(book.getISBN()) != null)
             return ResponseEntity.badRequest().body("Error! Book with ISBN " + book.getISBN() + " already exists!");
         return ResponseEntity.ok(this.bookService.save(book));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BookDTO> findBookById(@PathVariable Long id) {
+        return ResponseEntity.ok(this.bookService.findById(id));
     }
 }
