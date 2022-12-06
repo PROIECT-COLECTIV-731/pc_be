@@ -22,6 +22,5 @@ public class DomainController {
         if (domainService.findDomainByName(domain.getName()) != null)
             return ResponseEntity.badRequest().body("Error! Domain with name " + domain.getName() + " already exists!");
         return ResponseEntity.ok(this.domainService.addDomain(domain));
-
     }
 }
