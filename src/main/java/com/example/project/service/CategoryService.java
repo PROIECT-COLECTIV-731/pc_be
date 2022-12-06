@@ -1,12 +1,10 @@
 package com.example.project.service;
 
 import com.example.project.entity.CategoryEntity;
-import com.example.project.entity.PublisherEntity;
 import com.example.project.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 public class CategoryService {

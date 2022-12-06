@@ -1,14 +1,8 @@
 package com.example.project.service;
 
 import com.example.project.dto.BookDTO;
-import com.example.project.entity.DomainEntity;
-import com.example.project.entity.ReviewEntity;
-import com.example.project.entity.UserEntity;
 import com.example.project.repository.BookRepository;
 import com.example.project.entity.BookEntity;
-
-import com.example.project.repository.ReviewRepository;
-import com.example.project.repository.UserRepository;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
