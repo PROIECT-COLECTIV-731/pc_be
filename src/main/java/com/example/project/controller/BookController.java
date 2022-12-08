@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/books")
@@ -23,5 +24,13 @@ public class BookController {
     public ResponseEntity<BookEntity> saveBook(@RequestBody BookEntity book) {
         return ResponseEntity.ok(this.bookService.save(book));
     }
+    @CrossOrigin(origins = "*")
+    @GetMapping("/getBooksWithUsersNr")
+    public Map<String,String> getBorrowNrForBooks() {
+        Map<String,String>m=bookService.countUsersForAllBooks();
+        m.forEach((key, value) -> System.out.println(key + ":" + value));
+        return bookService.countUsersForAllBooks();
+    }
+
 
 }

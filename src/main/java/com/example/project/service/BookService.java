@@ -1,6 +1,7 @@
 package com.example.project.service;
 import java.awt.print.Book;
 import java.util.List;
+import java.util.Map;
 
 import com.example.project.dto.BookDTO;
 import com.example.project.entity.BookEntity;
@@ -13,4 +14,6 @@ public interface BookService {
     public BookDTO convertEntityToDTO(BookEntity book);
     public List<BookDTO> convertEntityListToDTOList(List<BookEntity> books);
     public BookEntity findBookByISBN(Long isbn);
+    List<String> sortBookTitlesAlphabetical();
+    Map<String,String> countUsersForAllBooks();
 }
