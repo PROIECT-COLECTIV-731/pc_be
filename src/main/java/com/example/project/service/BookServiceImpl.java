@@ -98,12 +98,12 @@ public class BookServiceImpl implements BookService{
     @Override
     public Map<String,String> countUsersForAllBooks() {
         List<BookEntity>allBooks=findAll();
-        Map<String,String>booksWithAmount=new HashMap<>();
+        Map<String,String>booksWithAmount=new LinkedHashMap<>();
         allBooks.forEach(book -> booksWithAmount.put(book.getTitle(),getNrUsersForABook(book)));
         return sortMap(booksWithAmount);
     }
     public Map<String,String> sortMap(Map<String,String>map) {
-        Map<String,String>sortedMap=new HashMap<>();
+        Map<String,String>sortedMap=new LinkedHashMap<>();
         map.entrySet().stream()
                 .sorted(Map.Entry.<String,String>comparingByKey())
                 .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));

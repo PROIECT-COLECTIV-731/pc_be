@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/review")
 public class ReviewController {
     private ReviewService reviewService;
     private BookService bookService;

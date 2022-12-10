@@ -27,8 +27,6 @@ public class BookController {
     @CrossOrigin(origins = "*")
     @GetMapping("/getBooksWithUsersNr")
     public Map<String,String> getBorrowNrForBooks() {
-        Map<String,String>m=bookService.countUsersForAllBooks();
-        m.forEach((key, value) -> System.out.println(key + ":" + value));
         return bookService.countUsersForAllBooks();
     }
 
