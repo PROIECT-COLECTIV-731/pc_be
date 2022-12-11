@@ -22,7 +22,9 @@ public class BookController {
         return ResponseEntity.ok(this.bookService.findAll());
     }
     @PostMapping("/add")
-    public ResponseEntity<BookEntity> saveBook(@RequestBody BookEntity book) {
+    public ResponseEntity saveBook(@RequestBody BookEntity book) {
+        if (bookService.findByISBN(book.getISBN()) != null)
+            return ResponseEntity.badRequest().body("Error! Book with ISBN " + book.getISBN() + " already exists!");
         return ResponseEntity.ok(this.bookService.save(book));
     }
 
