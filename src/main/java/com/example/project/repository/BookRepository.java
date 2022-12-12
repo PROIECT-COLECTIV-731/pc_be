@@ -14,6 +14,9 @@ public interface BookRepository extends JpaRepository<BookEntity, Long> {
 
     @Override
     BookEntity save(BookEntity book);
+
+    Optional<BookEntity> findById(Long id);
+
     @Override
     void delete(BookEntity book);
 

@@ -3,13 +3,11 @@ package com.example.project.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
-
 
 @Entity
 @Data
-@Table(name = "Users")
-public class UserEntity {
+@Table(name = "Admin")
+public class AdminEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,12 +25,5 @@ public class UserEntity {
     @Column
     private String password;
 
-    @Column(unique = true)
-    private String username;
 
-    @OneToMany(mappedBy = "userEntity")
-    private List<UserBookEntity>books;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ReviewEntity> reviews;
 }
-

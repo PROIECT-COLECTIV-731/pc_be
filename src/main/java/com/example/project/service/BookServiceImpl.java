@@ -38,6 +38,15 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
+    public BookEntity findByISBN(Long ISBN){
+        for(BookEntity b: bookRepository.findAll()){
+            if(Objects.equals(b.getISBN(), ISBN)){
+                return b;
+            }
+        }
+        return null;
+    }
+
     public void delete(BookEntity book) {
         if(book!=null)
         {
@@ -50,6 +59,11 @@ public class BookServiceImpl implements BookService{
         {
             books.forEach(this::delete);
         }
+    }
+
+    @Override
+    public BookDTO findById(Long id) {
+        return this.convertEntityToDTO(this.bookRepository.findById(id).orElse(null));
     }
 
     @Override
