@@ -40,11 +40,11 @@ public class BookEntity {
     private String contentLink;
 
     @ManyToOne
-    @JoinColumn(name="domain_id", nullable=false)
+    @JoinColumn(name="domain_id")
     private DomainEntity domain;
 
     @ManyToOne
-    @JoinColumn(name="publisher_id", nullable=false)
+    @JoinColumn(name="publisher_id")
     private PublisherEntity publisher;
 
     @ManyToMany

@@ -3,11 +3,14 @@ package com.example.project.service;
 import com.example.project.dto.BookDTO;
 import com.example.project.entity.BookEntity;
 import com.example.project.repository.BookRepository;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class BookServiceImpl implements BookService{
@@ -25,6 +28,16 @@ public class BookServiceImpl implements BookService{
     public BookEntity save(BookEntity book){
         if (book != null)
             return bookRepository.save(book);
+        return null;
+    }
+
+    @Override
+    public BookEntity findByISBN(Long ISBN){
+        for(BookEntity b: bookRepository.findAll()){
+            if(Objects.equals(b.getISBN(), ISBN)){
+                return b;
+            }
+        }
         return null;
     }
 
