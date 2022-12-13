@@ -118,6 +118,7 @@ public class BookServiceImpl implements BookService{
                 publicationYear(book.getPublicationYear()).
                 bookCategories(categories)
                 .domain(book.getDomain().getName())
+                .contentLink(book.getContentLink())
                 .build();
     }
 

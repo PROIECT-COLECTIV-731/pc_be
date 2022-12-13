@@ -1,5 +1,7 @@
 package com.example.project.entity;
+
 import com.sun.istack.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +11,9 @@ import lombok.NoArgsConstructor;
 
 import lombok.ToString;
 import lombok.Getter;
+
+import lombok.*;
+
 
 import javax.persistence.*;
 import java.util.List;
@@ -43,6 +48,10 @@ public class BookEntity {
     @NotNull
     @Column(name = "publication_year")
     private int publicationYear;
+
+    @NotNull
+    @Column(name = "content_link")
+    private String contentLink;
 
     @ManyToOne
     @JoinColumn(name="domain_id")
