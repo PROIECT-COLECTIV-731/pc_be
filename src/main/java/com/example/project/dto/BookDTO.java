@@ -25,4 +25,6 @@ public class BookDTO {
     private String summary;
 
     private float ranking;
+
+    private String contentLink;
 }

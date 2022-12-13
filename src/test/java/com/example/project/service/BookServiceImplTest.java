@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -37,10 +37,11 @@ class BookServiceImplTest {
         firstDomain = new DomainEntity(1L, "SomeDomain", List.of());
         firstCategory = new CategoryEntity((1L), "SomeCategory", List.of());
 
+
 //        firstEntity = new BookEntity(1L, 12345L, "First author", "Huba Buba",
-//                2012, firstDomain, firstPublisher, List.of(), "Description", 7.75F);
+//                2012, "https://gawrylyta.files.wordpress.com/2011/11/asimov_20-_20eu_2c_20robotul.pdf", firstDomain, firstPublisher, List.of(), "Description", 7.75F,new ArrayList<>());
 //        secondEntity = new BookEntity(2L, 4534L, "Second author", "Buba Huba",
-//                2010, firstDomain, firstPublisher, List.of(), "Different description", 9.75F);
+//                2010, "", firstDomain, firstPublisher, List.of(), "Different description", 9.75F, new ArrayList<>());
 //
 //        this.testService = new BookServiceImpl(testBookRepository);
     }
