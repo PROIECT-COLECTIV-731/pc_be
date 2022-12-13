@@ -54,9 +54,9 @@ public class UserController {
     public ResponseEntity<UserDto> findUserByEmailAndPassword(@PathVariable String email, String password) {
         return ResponseEntity.ok(this.userService.findByEmailAndPassword(email, password));
     }
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody String email, String password)
-    {return ResponseEntity.ok(userService.login(email, password));}
+//    @PostMapping("/login")
+//    public ResponseEntity<String> login(@RequestBody String email, String password)
+//    {return ResponseEntity.ok(userService.login(email, password));}
 
 
     @PostMapping("/login")
@@ -78,9 +78,16 @@ public class UserController {
     }
 
     @GetMapping("/checked-out-books")
-    public ResponseEntity<List<BookEntity>> bookTitlesForUser(@RequestParam String username) {
-        List<BookEntity> books = userService.getBooks(username);
-        books.sort(Comparator.comparing(BookEntity::getTitle));
-        return ResponseEntity.ok(books);
+    public ResponseEntity<List<BookDTO>> bookTitlesForUser(@RequestParam String username) {
+        UserEntity user = userService.findUserByUserName(username);
+        if(user != null) {
+            List<BookDTO>books=bookService.convertEntityListToDTOList(userBookService.getUserBooks(user));
+            books.sort(Comparator.comparing(BookDTO::getTitle));
+
+            if (books.size() > 0) {
+                return ResponseEntity.ok().body(books);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 }
