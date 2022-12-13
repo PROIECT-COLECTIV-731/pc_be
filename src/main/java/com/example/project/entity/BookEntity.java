@@ -4,13 +4,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 //import javax.validation.constraints.Max;
 //import javax.validation.constraints.Min;
+
+import lombok.ToString;
+import lombok.Getter;
+
+import javax.persistence.*;
+import java.util.List;
+
 
 
 @Entity
 @Data
+
+@ToString
+@Getter
 @Table(name = "Book")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,26 +44,31 @@ public class BookEntity {
     @Column(name = "publication_year")
     private int publicationYear;
 
-    //to do
     @ManyToOne
-    @JoinColumn(name="domain_id", nullable=false)
+    @JoinColumn(name="domain_id")
     private DomainEntity domain;
 
-    //to do
     @ManyToOne
-    @JoinColumn(name="publisher_id", nullable=false)
+    @JoinColumn(name="publisher_id")
     private PublisherEntity publisher;
 
-    //to do
-    @ManyToOne
-    @JoinColumn(name="category_id", nullable=false)
-    private CategoryEntity category;
+    @ManyToMany
+    @JoinTable(
+            name = "book_category",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private List<CategoryEntity> bookCategories;
 
     @Column(name = "summary")
     private String summary;
 
     @Column(name = "ranking")
     private float ranking;
+
+
+    @OneToMany(mappedBy = "bookEntity")
+    private List<UserBookEntity>books;
+
 }
 
 //    a admin user
@@ -68,4 +82,6 @@ public class BookEntity {
 //        - categories (recommendations for specific courses - from category catalogue, optional, many)
 //        - summary - string, optional
 //        - ranking (from a scale from 1 to 5) - read only, default 0
+
 //        That i can create the library of books
+

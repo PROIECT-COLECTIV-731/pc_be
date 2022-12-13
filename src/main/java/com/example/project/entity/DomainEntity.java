@@ -3,12 +3,19 @@ package com.example.project.entity;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
 @Data
 @Table(name = "Domain")
+
+@AllArgsConstructor
+@NoArgsConstructor
 public class DomainEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,4 +28,5 @@ public class DomainEntity {
     @OneToMany(mappedBy="domain")
     @JsonIgnore
     private List<BookEntity> domainBooks;
+
 }
