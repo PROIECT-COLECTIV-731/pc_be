@@ -11,14 +11,13 @@ import com.example.project.service.BookService;
 import com.example.project.service.UserBookService;
 import com.example.project.service.UserService;
 import com.example.project.service.UserServiceImpl;
+import org.apache.logging.log4j.util.PropertySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Base64;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/user")
@@ -76,5 +75,12 @@ public class UserController {
             return userService.saveUser(user);
         }
         return null;
+    }
+
+    @GetMapping("/checked-out-books")
+    public ResponseEntity<List<BookEntity>> bookTitlesForUser(@RequestParam String username) {
+        List<BookEntity> books = userService.getBooks(username);
+        books.sort(Comparator.comparing(BookEntity::getTitle));
+        return ResponseEntity.ok(books);
     }
 }
