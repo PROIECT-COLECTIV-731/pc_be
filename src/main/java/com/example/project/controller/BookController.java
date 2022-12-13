@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/books")
@@ -27,6 +28,12 @@ public class BookController {
             return ResponseEntity.badRequest().body("Error! Book with ISBN " + book.getISBN() + " already exists!");
         return ResponseEntity.ok(this.bookService.save(book));
     }
+    @CrossOrigin(origins = "*")
+    @GetMapping("/getBooksWithUsersNr")
+    public Map<String,String> getBorrowNrForBooks() {
+        return bookService.countUsersForAllBooks();
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<BookDTO> findBookById(@PathVariable Long id) {
