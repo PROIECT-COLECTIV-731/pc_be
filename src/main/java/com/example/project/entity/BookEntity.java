@@ -24,6 +24,7 @@ import java.util.List;
 @Data
 
 @ToString
+@Builder
 @Getter
 @Table(name = "Book")
 @AllArgsConstructor

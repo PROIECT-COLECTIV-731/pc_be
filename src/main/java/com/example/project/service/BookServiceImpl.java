@@ -5,14 +5,8 @@ import java.util.List;
 
 import com.example.project.dto.BookDTO;
 import com.example.project.dto.BookSearchDTO;
-import com.example.project.entity.DomainEntity;
-import com.example.project.entity.ReviewEntity;
-import com.example.project.entity.UserEntity;
-import com.example.project.repository.BookRepository;
-import com.example.project.entity.BookEntity;
-import com.example.project.repository.ReviewRepository;
-import com.example.project.repository.UserBookRepository;
-import com.example.project.repository.UserRepository;
+import com.example.project.entity.*;
+import com.example.project.repository.*;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +19,13 @@ import java.util.stream.Collectors;
 public class BookServiceImpl implements BookService{
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private DomainRepository domainRepository;
+    @Autowired
+    private PublisherRepository publisherRepository;
+    @Autowired
+    private CategoryService categoryService;
 
     @Autowired
     private UserBookRepository userBookRepository;
@@ -44,37 +45,37 @@ public class BookServiceImpl implements BookService{
     }
 
 
-    public BookSearchDTO convertToDTO(BookEntity book){
-        return BookSearchDTO.builder()
-                .ISBN(book.getISBN())
-                .author(book.getAuthor())
-                .title(book.getTitle())
-                .publicationYear(book.getPublicationYear())
-                .category(book.getCategory())
-                .domain(book.getDomain())
-                .build();
-    }
+//    public BookSearchDTO convertToDTO(BookEntity book){
+//        return BookSearchDTO.builder()
+//                .ISBN(book.getISBN())
+//                .author(book.getAuthor())
+//                .title(book.getTitle())
+//                .publicationYear(book.getPublicationYear())
+//                .category(book.getCategory())
+//                .domain(book.getDomain())
+//                .build();
+//    }
 
-    public List<BookSearchDTO> convertListToDTO(List<BookEntity> bookEntities){
-        return bookEntities.stream().map(this::convertToDTO).collect(Collectors.toList());
+//    public List<BookSearchDTO> convertListToDTO(List<BookEntity> bookEntities){
+//        return bookEntities.stream().map(this::convertToDTO).collect(Collectors.toList());
+//
+//    }
 
-    }
+//    public List<BookSearchDTO> search(String word){
+//        if(word == null || word.isBlank() || word.isEmpty())
+//            return convertListToDTO(this.bookRepository.findAll());
+//        List<BookSearchDTO> returnList = new ArrayList<>();
+//
+//
+//        for(BookEntity book : this.bookRepository.findAll()){
+//            if(book.toString().contains(word))
+//                returnList.add(convertToDTO(book));
+//
+//        }
+//        return returnList;
+//
+//    }
 
-    public List<BookSearchDTO> search(String word){
-        if(word == null || word.isBlank() || word.isEmpty())
-            return convertListToDTO(this.bookRepository.findAll());
-        List<BookSearchDTO> returnList = new ArrayList<>();
-
-
-        for(BookEntity book : this.bookRepository.findAll()){
-            if(book.toString().contains(word))
-                returnList.add(convertToDTO(book));
-
-        }
-        return returnList;
-
-    }
-}
 
     @Override
     public BookEntity findByISBN(Long ISBN){
@@ -156,6 +157,49 @@ public class BookServiceImpl implements BookService{
         allBooks.forEach(book -> booksWithAmount.put(book.getTitle(),getNrUsersForABook(book)));
         return sortMap(booksWithAmount);
     }
+
+    @Override
+    public BookEntity update(BookEntity book) {
+        BookEntity bookEntity = null;
+        if(book!= null){
+            bookEntity = findBookByISBN(book.getISBN());
+            bookEntity.setISBN(book.getISBN());
+            bookEntity.setAuthor(book.getAuthor());
+            bookEntity.setDomain(book.getDomain());
+            bookEntity.setContentLink(book.getContentLink());
+            bookEntity.setPublicationYear(book.getPublicationYear());
+            bookEntity.setRanking(book.getRanking());
+            bookEntity.setSummary(book.getSummary());
+            bookEntity.setPublisher(book.getPublisher());
+            bookEntity.setTitle(book.getTitle());
+            bookEntity.setBookCategories(book.getBookCategories());
+        }
+        return bookEntity;
+    }
+
+    @Override
+    public BookEntity convertDTOToEntity(BookDTO bookDTO) {
+        List<CategoryEntity>categories=new ArrayList<>();
+        PublisherEntity publisher = new PublisherEntity();
+        publisher.setName(bookDTO.getPublisher());
+        publisherRepository.save(publisher);
+        DomainEntity domain = new DomainEntity();
+        domain.setName(bookDTO.getDomain());
+        domainRepository.save(domain);
+        bookDTO.getBookCategories().forEach(category -> categories.add(categoryService.findPublisherByName(category)));
+        return BookEntity.builder().
+                ISBN(bookDTO.getISBN()).
+                author(bookDTO.getAuthor()).
+                title(bookDTO.getTitle()).
+                ranking(bookDTO.getRanking())
+                .publisher(publisher).
+                publicationYear(bookDTO.getPublicationYear()).
+                bookCategories(categories)
+                .domain(domain)
+                .build();
+    }
+
+
     public Map<String,String> sortMap(Map<String,String>map) {
         Map<String,String>sortedMap=new LinkedHashMap<>();
         map.entrySet().stream()

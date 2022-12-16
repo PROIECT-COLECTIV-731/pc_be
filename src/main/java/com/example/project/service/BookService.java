@@ -12,7 +12,7 @@ public interface BookService {
     public BookEntity save(BookEntity book);
     public BookEntity findByISBN(Long ISBN);
     public BookDTO findById(Long id);
-    public List<BookSearchDTO> search(String word);
+//    public List<BookSearchDTO> search(String word);
     void delete(BookEntity book);
     void deleteAll(List<BookEntity>books);
     public BookDTO convertEntityToDTO(BookEntity book);
@@ -20,4 +20,6 @@ public interface BookService {
     public BookEntity findBookByISBN(Long isbn);
     List<String> sortBookTitlesAlphabetical();
     Map<String,String> countUsersForAllBooks();
+    public BookEntity update(BookEntity book);
+    public BookEntity convertDTOToEntity(BookDTO dto);
 }

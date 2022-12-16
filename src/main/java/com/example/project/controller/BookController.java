@@ -28,9 +28,9 @@ public class BookController {
         return ResponseEntity.ok(this.bookService.findAll());
     }
 
-    @GetMapping("/search")
-    public List<BookSearchDTO> searchBook(@RequestParam String word){
-        return this.bookService.search(word);
+//    @GetMapping("/search")
+//    public List<BookSearchDTO> searchBook(@RequestParam String word){
+//        return this.bookService.search(word);
 
     @PostMapping("/add")
     public ResponseEntity saveBook(@RequestBody BookEntity book) {
@@ -49,5 +49,11 @@ public class BookController {
     public ResponseEntity<BookDTO> findBookById(@PathVariable Long id) {
         return ResponseEntity.ok(this.bookService.findById(id));
 
+    }
+
+    @PostMapping("/update")
+    public BookEntity updateBook(@RequestBody BookDTO dto) {
+        BookEntity bookEntity = bookService.convertDTOToEntity(dto);
+        return bookService.update(bookEntity);
     }
 }
