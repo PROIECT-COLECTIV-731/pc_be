@@ -50,7 +50,6 @@ public class BookServiceImpl implements BookService{
                 .author(book.getAuthor())
                 .title(book.getTitle())
                 .publicationYear(book.getPublicationYear())
-                .category(book.getCategory())
                 .domain(book.getDomain())
                 .build();
     }
@@ -74,7 +73,7 @@ public class BookServiceImpl implements BookService{
         return returnList;
 
     }
-}
+
 
     @Override
     public BookEntity findByISBN(Long ISBN){
@@ -119,6 +118,7 @@ public class BookServiceImpl implements BookService{
                 bookCategories(categories)
                 .domain(book.getDomain().getName())
                 .contentLink(book.getContentLink())
+                .summary(book.getSummary())
                 .build();
     }
 

@@ -29,8 +29,9 @@ public class BookController {
     }
 
     @GetMapping("/search")
-    public List<BookSearchDTO> searchBook(@RequestParam String word){
+    public List<BookSearchDTO> searchBook(@RequestParam String word) {
         return this.bookService.search(word);
+    }
 
     @PostMapping("/add")
     public ResponseEntity saveBook(@RequestBody BookEntity book) {

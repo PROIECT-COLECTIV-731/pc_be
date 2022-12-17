@@ -60,9 +60,9 @@ public class UserController {
     {return ResponseEntity.ok(userService.login(email, password));}
 
 
-    @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody String email, String password)
-    {return ResponseEntity.ok(userService.login(email, password));}
+//    @PostMapping("/login")
+//    public ResponseEntity<String> loginUser(@RequestBody String email, String password)
+//    {return ResponseEntity.ok(userService.login(email, password));}
 
     @PostMapping(value = "/save")
     public UserEntity saveUsers(@RequestBody UserEntity userEntity) {
