@@ -6,6 +6,7 @@ import com.example.project.entity.CategoryEntity;
 import com.example.project.entity.DomainEntity;
 import com.example.project.entity.PublisherEntity;
 import com.example.project.repository.BookRepository;
+import com.example.project.repository.UserBookRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,6 +23,9 @@ import static org.mockito.Mockito.when;
 class BookServiceImplTest {
     @Mock
     BookRepository testBookRepository;
+
+    @Mock
+    UserBookRepository testUserBookRepository;
     BookEntity firstEntity;
     BookEntity secondEntity;
     CategoryEntity firstCategory;
@@ -37,12 +41,12 @@ class BookServiceImplTest {
         firstDomain = new DomainEntity(1L, "SomeDomain", List.of());
         firstCategory = new CategoryEntity((1L), "SomeCategory", List.of());
 
-//        firstEntity = new BookEntity(1L, 12345L, "First author", "Huba Buba",
-//                2012, firstDomain, firstPublisher, List.of(), "Description", 7.75F);
-//        secondEntity = new BookEntity(2L, 4534L, "Second author", "Buba Huba",
-//                2010, firstDomain, firstPublisher, List.of(), "Different description", 9.75F);
-//
-//        this.testService = new BookServiceImpl(testBookRepository);
+        firstEntity = new BookEntity(1L, 12345L, "First author", "Huba Buba",
+                2012, firstDomain, firstPublisher, List.of(), "Description", 7.75F, List.of());
+        secondEntity = new BookEntity(2L, 4534L, "Second author", "Buba Huba",
+                2010, firstDomain, firstPublisher, List.of(), "Different description", 9.75F, List.of());
+
+        this.testService = new BookServiceImpl(testBookRepository, testUserBookRepository);
     }
 
     @Test

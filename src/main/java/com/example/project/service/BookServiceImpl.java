@@ -24,6 +24,11 @@ public class BookServiceImpl implements BookService{
     @Autowired
     private UserBookRepository userBookRepository;
 
+    BookServiceImpl(BookRepository bookRepository, UserBookRepository userBookRepository){
+        this.bookRepository = bookRepository;
+        this.userBookRepository = userBookRepository;
+    }
+
 
     @Override
     public List<BookEntity> findAll() {
