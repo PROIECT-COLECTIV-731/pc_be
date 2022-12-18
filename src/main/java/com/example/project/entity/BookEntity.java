@@ -1,5 +1,6 @@
 package com.example.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
 import lombok.AllArgsConstructor;
@@ -74,7 +75,7 @@ public class BookEntity {
     @Column(name = "ranking")
     private float ranking;
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "bookEntity")
     private List<UserBookEntity>books;
 
