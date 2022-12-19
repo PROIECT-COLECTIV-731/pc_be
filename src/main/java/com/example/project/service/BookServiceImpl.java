@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.project.dto.BookDTO;
+import com.example.project.dto.BookSearchDTO;
 import com.example.project.entity.*;
 import com.example.project.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,12 +53,12 @@ public class BookServiceImpl implements BookService {
 //                .domain(book.getDomain())
 //                .build();
 //    }
-
+//
 //    public List<BookSearchDTO> convertListToDTO(List<BookEntity> bookEntities){
 //        return bookEntities.stream().map(this::convertToDTO).collect(Collectors.toList());
 //
 //    }
-
+//
 //    public List<BookSearchDTO> search(String word){
 //        if(word == null || word.isBlank() || word.isEmpty())
 //            return convertListToDTO(this.bookRepository.findAll());
