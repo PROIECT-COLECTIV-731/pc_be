@@ -66,10 +66,6 @@ public class UserServiceImpl implements UserService{
         return userMapper.entityToDto(this.userRepository.findByEmailAndPassword(email, password));
     }
 
-    @Override
-    public UserDto findByEmail(String email) {
-        return userMapper.entityToDto(this.userRepository.findByEmail(email));
-    }
 
 
     @Override
