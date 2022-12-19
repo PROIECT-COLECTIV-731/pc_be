@@ -51,4 +51,9 @@ public class BookController {
         return ResponseEntity.ok(this.bookService.findById(id));
 
     }
+
+    @PostMapping("/update")
+    public BookEntity updateBook(@RequestBody BookDTO dto) {
+        return bookService.update(dto);
+    }
 }
