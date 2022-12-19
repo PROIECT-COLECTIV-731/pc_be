@@ -24,12 +24,6 @@ public class UserEntity {
     @Column
     private String email;
 
-    @Column
-    private String password;
-
-    @Column
-    private String permission;
-
     @Column(unique = true)
     private String username;
 
@@ -37,5 +31,11 @@ public class UserEntity {
     private List<UserBookEntity>books;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewEntity> reviews;
+    
+    @Column
+    private String password;
+
+    @Column
+    private boolean AccountVerified;
 }
 
