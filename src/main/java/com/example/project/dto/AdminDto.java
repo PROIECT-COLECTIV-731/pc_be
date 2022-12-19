@@ -6,15 +6,16 @@ import lombok.Data;
 
 import javax.persistence.Column;
 @Data
-public class UserDto {
+public class AdminDto {
     private Long id;
     private String firstName;
+
     private String lastName;
-    private String username;
+
     private String email;
 
     private String password;
 
-    private String permission;
+
 
 }
