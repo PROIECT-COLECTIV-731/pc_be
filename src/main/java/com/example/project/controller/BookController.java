@@ -1,8 +1,13 @@
 package com.example.project.controller;
 
 
+import com.example.project.dto.BookSearchDTO;
+import com.example.project.entity.CategoryEntity;
+import com.example.project.entity.DomainEntity;
+
 import com.example.project.dto.BookDTO;
 import com.example.project.entity.BookEntity;
+
 import com.example.project.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +16,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Long.parseLong;
+
 @RestController
+@CrossOrigin(origins="*")
 @RequestMapping("/books")
 public class BookController {
 
@@ -22,6 +30,12 @@ public class BookController {
     public ResponseEntity<List<BookEntity>> getAll() {
         return ResponseEntity.ok(this.bookService.findAll());
     }
+
+    @GetMapping("/search")
+    public List<BookSearchDTO> searchBook(@RequestParam String word) {
+        return this.bookService.search(word);
+    }
+
     @PostMapping("/add")
     public ResponseEntity saveBook(@RequestBody BookEntity book) {
         if (bookService.findByISBN(book.getISBN()) != null)
@@ -38,5 +52,12 @@ public class BookController {
     @GetMapping("/{id}")
     public ResponseEntity<BookDTO> findBookById(@PathVariable Long id) {
         return ResponseEntity.ok(this.bookService.findById(id));
+
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/get-books/{studentId}")
+    public ResponseEntity<List<BookDTO>> getBooksBorrowedByStudentWithGivenId(@PathVariable Long studentId){
+        return ResponseEntity.ok(this.bookService.getBooksBorrowedByStudentWithGivenId(studentId));
     }
 }

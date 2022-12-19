@@ -1,19 +1,22 @@
 package com.example.project.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.example.project.dto.BookDTO;
+import com.example.project.entity.BookEntity;
+import com.example.project.dto.BookSearchDTO;
 import com.example.project.entity.DomainEntity;
 import com.example.project.entity.ReviewEntity;
 import com.example.project.entity.UserEntity;
 import com.example.project.repository.BookRepository;
-import com.example.project.entity.BookEntity;
-import com.example.project.repository.ReviewRepository;
 import com.example.project.repository.UserBookRepository;
 import com.example.project.repository.UserRepository;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Book;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,9 +24,11 @@ import java.util.stream.Collectors;
 public class BookServiceImpl implements BookService{
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private UserBookRepository userBookRepository;
-
 
     @Override
     public List<BookEntity> findAll() {
@@ -36,6 +41,38 @@ public class BookServiceImpl implements BookService{
             return bookRepository.save(book);
         return null;
     }
+
+
+    public BookSearchDTO convertToDTO(BookEntity book){
+        return BookSearchDTO.builder()
+                .ISBN(book.getISBN())
+                .author(book.getAuthor())
+                .title(book.getTitle())
+                .publicationYear(book.getPublicationYear())
+                .domain(book.getDomain())
+                .build();
+    }
+
+    public List<BookSearchDTO> convertListToDTO(List<BookEntity> bookEntities){
+        return bookEntities.stream().map(this::convertToDTO).collect(Collectors.toList());
+
+    }
+
+    public List<BookSearchDTO> search(String word){
+        if(word == null || word.isBlank() || word.isEmpty())
+            return convertListToDTO(this.bookRepository.findAll());
+        List<BookSearchDTO> returnList = new ArrayList<>();
+
+
+        for(BookEntity book : this.bookRepository.findAll()){
+            if(book.toString().contains(word))
+                returnList.add(convertToDTO(book));
+
+        }
+        return returnList;
+
+    }
+
 
     @Override
     public BookEntity findByISBN(Long ISBN){
@@ -79,6 +116,8 @@ public class BookServiceImpl implements BookService{
                 publicationYear(book.getPublicationYear()).
                 bookCategories(categories)
                 .domain(book.getDomain().getName())
+                .contentLink(book.getContentLink())
+                .summary(book.getSummary())
                 .build();
     }
 
@@ -116,6 +155,16 @@ public class BookServiceImpl implements BookService{
         allBooks.forEach(book -> booksWithAmount.put(book.getTitle(),getNrUsersForABook(book)));
         return sortMap(booksWithAmount);
     }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+    public List<BookDTO> getBooksBorrowedByStudentWithGivenId(Long id) {
+        UserEntity user = this.userRepository.findById(id);
+        List<BookDTO> result = new ArrayList<>();
+        user.getBooks().forEach(x->result.add(convertEntityToDTO(x.getBookEntity())));
+        return result;
+    }
+
     public Map<String,String> sortMap(Map<String,String>map) {
         Map<String,String>sortedMap=new LinkedHashMap<>();
         map.entrySet().stream()
@@ -127,3 +176,4 @@ public class BookServiceImpl implements BookService{
 
 
 }
+
