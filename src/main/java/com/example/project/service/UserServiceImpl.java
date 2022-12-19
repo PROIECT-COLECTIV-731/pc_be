@@ -1,7 +1,10 @@
 package com.example.project.service;
 
+import com.example.project.dto.RegisterRequestDto;
+import com.example.project.dto.RegisterResponseDto;
 import com.example.project.dto.UserDto;
 import com.example.project.entity.BookEntity;
+import com.example.project.entity.ReviewEntity;
 import com.example.project.entity.UserBookEntity;
 
 import com.example.project.entity.UserEntity;
@@ -12,9 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -79,8 +81,8 @@ public class UserServiceImpl implements UserService{
             return null;
         }
     }
-    public boolean email_validator(UserEntity userEntity){
-        return userEntity.getEmail().endsWith("@stud.ubbcluj.ro");
+    public boolean email_validator(RegisterRequestDto dto){
+        return dto.getEmail().endsWith("@stud.ubbcluj.ro") || dto.getEmail().endsWith("@ubbcluj.ro") ;
     }
     public boolean name_validator(UserEntity userEntity){
         return userEntity.getFirstName().length() > 0 && userEntity.getLastName().length() > 0;
@@ -88,8 +90,32 @@ public class UserServiceImpl implements UserService{
     public boolean password_validator(UserEntity userEntity){
         return userEntity.getPassword().length()>0;
     }
-    public UserEntity saveUser(UserEntity userEntity){
-        return userRepository.save(userEntity);
+    public RegisterResponseDto saveUser(RegisterRequestDto dto) throws Exception {
+
+
+            Optional<UserEntity> optionalUserEntity = Optional.ofNullable(userRepository.findByEmail(dto.getEmail()));
+            if (optionalUserEntity.isPresent()) {
+                throw new Exception();
+            }
+            else {
+                    UserEntity user = new UserEntity();
+                    user.setEmail(dto.getEmail());
+                    user.setUsername(dto.getEmail());
+                    String firstName = dto.getEmail().split("\\.")[0];
+                    String lastName = dto.getEmail().split("\\.")[1].split("@")[0];
+                    user.setFirstName(firstName);
+                    user.setLastName(lastName);
+                    user.setPassword(dto.getPassword());
+                    List<UserBookEntity> userBookEntities = new ArrayList<UserBookEntity>();
+                    user.setBooks(userBookEntities);
+                    user.setReviews(new ArrayList<ReviewEntity>());
+
+                    userRepository.save(user);
+                    RegisterResponseDto responseDto = new RegisterResponseDto();
+                    responseDto.setEmail(userRepository.findByEmail(dto.getEmail()).getEmail());
+                return responseDto;
+            }
+
     }
 
     @Override

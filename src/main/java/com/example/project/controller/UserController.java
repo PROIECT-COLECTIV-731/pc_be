@@ -1,6 +1,8 @@
 package com.example.project.controller;
 
 import com.example.project.dto.BookDTO;
+import com.example.project.dto.RegisterRequestDto;
+import com.example.project.dto.RegisterResponseDto;
 import com.example.project.dto.UserDto;
 import com.example.project.entity.UserEntity;
 import com.example.project.entity.BookEntity;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Base64;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -58,6 +61,10 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody String email, String password)
     {return ResponseEntity.ok(userService.login(email, password));}
+    
+    // @PostMapping("/login")
+   // public ResponseEntity<String> loginUser(@RequestBody String email, String password)
+   // {return ResponseEntity.ok(userService.login(email, password));}
 
 
     @PostMapping(value = "/save")
@@ -70,7 +77,17 @@ public class UserController {
             user.setLastName(userEntity.getLastName());
             user.setId(userEntity.getId());
             return userService.saveUser(user);
+            }
+            return null;
+            }
+
+    @PostMapping(value = "/register")
+    public ResponseEntity<RegisterResponseDto> registerUser(@RequestBody RegisterRequestDto dto) {
+        try{
+            return new ResponseEntity<>(userService.saveUser(dto),HttpStatus.OK);
         }
-        return null;
+        catch (Exception e) {
+            return ResponseEntity.status(409).build();
+        }
     }
 }

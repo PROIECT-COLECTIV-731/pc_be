@@ -22,13 +22,11 @@ public class BookServiceImpl implements BookService {
     private DomainRepository domainRepository;
     @Autowired
     private PublisherRepository publisherRepository;
-
     @Autowired
     private CategoryRepository categoryRepository;
 
     @Autowired
     private UserBookRepository userBookRepository;
-
 
     @Override
     public List<BookEntity> findAll() {
@@ -42,38 +40,35 @@ public class BookServiceImpl implements BookService {
         return null;
     }
 
+    public BookSearchDTO convertToDTO(BookEntity book){
+        return BookSearchDTO.builder()
+                .ISBN(book.getISBN())
+                .author(book.getAuthor())
+                .title(book.getTitle())
+                .publicationYear(book.getPublicationYear())
+                .domain(book.getDomain())
+                .build();
+    }
 
-//    public BookSearchDTO convertToDTO(BookEntity book){
-//        return BookSearchDTO.builder()
-//                .ISBN(book.getISBN())
-//                .author(book.getAuthor())
-//                .title(book.getTitle())
-//                .publicationYear(book.getPublicationYear())
-//                .category(book.getCategory())
-//                .domain(book.getDomain())
-//                .build();
-//    }
-//
-//    public List<BookSearchDTO> convertListToDTO(List<BookEntity> bookEntities){
-//        return bookEntities.stream().map(this::convertToDTO).collect(Collectors.toList());
-//
-//    }
-//
-//    public List<BookSearchDTO> search(String word){
-//        if(word == null || word.isBlank() || word.isEmpty())
-//            return convertListToDTO(this.bookRepository.findAll());
-//        List<BookSearchDTO> returnList = new ArrayList<>();
-//
-//
-//        for(BookEntity book : this.bookRepository.findAll()){
-//            if(book.toString().contains(word))
-//                returnList.add(convertToDTO(book));
-//
-//        }
-//        return returnList;
-//
-//    }
+    public List<BookSearchDTO> convertListToDTO(List<BookEntity> bookEntities){
+        return bookEntities.stream().map(this::convertToDTO).collect(Collectors.toList());
 
+    }
+
+    public List<BookSearchDTO> search(String word){
+        if(word == null || word.isBlank() || word.isEmpty())
+            return convertListToDTO(this.bookRepository.findAll());
+        List<BookSearchDTO> returnList = new ArrayList<>();
+
+
+        for(BookEntity book : this.bookRepository.findAll()){
+            if(book.toString().contains(word))
+                returnList.add(convertToDTO(book));
+
+        }
+        return returnList;
+
+    }
 
     @Override
     public BookEntity findByISBN(Long ISBN) {
@@ -117,6 +112,7 @@ public class BookServiceImpl implements BookService {
                 bookCategories(categories)
                 .domain(book.getDomain().getName())
                 .contentLink(book.getContentLink())
+                .summary(book.getSummary())
                 .build();
     }
 
