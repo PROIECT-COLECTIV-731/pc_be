@@ -18,4 +18,5 @@ public interface BookService {
     public BookEntity findBookByISBN(Long isbn);
     List<String> sortBookTitlesAlphabetical();
     Map<String,String> countUsersForAllBooks();
+    public List<BookDTO> getBooksBorrowedByStudentWithGivenId(Long id);
 }

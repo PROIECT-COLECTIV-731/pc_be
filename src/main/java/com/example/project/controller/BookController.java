@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Long.parseLong;
+
 @RestController
+@CrossOrigin(origins="*")
 @RequestMapping("/books")
 public class BookController {
 
@@ -38,5 +41,11 @@ public class BookController {
     @GetMapping("/{id}")
     public ResponseEntity<BookDTO> findBookById(@PathVariable Long id) {
         return ResponseEntity.ok(this.bookService.findById(id));
+    }
+
+    @CrossOrigin(origins = "*")
+    @GetMapping("/get-books/{studentId}")
+    public ResponseEntity<List<BookDTO>> getBooksBorrowedByStudentWithGivenId(@PathVariable Long studentId){
+        return ResponseEntity.ok(this.bookService.getBooksBorrowedByStudentWithGivenId(studentId));
     }
 }

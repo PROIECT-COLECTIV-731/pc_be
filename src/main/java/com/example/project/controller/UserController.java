@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
+@CrossOrigin(origins="*")
 @RequestMapping("/user")
 public class UserController {
     @Autowired
@@ -65,12 +66,15 @@ public class UserController {
 
     @PostMapping(value = "/save")
     public UserEntity saveUsers(@RequestBody UserEntity userEntity) {
-        if(userService.email_validator(userEntity) && userService.name_validator(userEntity) && userService.password_validator(userEntity)){
+        if(userService.email_validator(userEntity) &&
+                userService.name_validator(userEntity) &&
+                userService.password_validator(userEntity)){
             UserEntity user = new UserEntity();
             user.setEmail(userEntity.getEmail());
             user.setPassword(userEntity.getPassword());
             user.setFirstName(userEntity.getFirstName());
             user.setLastName(userEntity.getLastName());
+            user.setUsername(userEntity.getUsername());
             user.setId(userEntity.getId());
             return userService.saveUser(user);
         }
