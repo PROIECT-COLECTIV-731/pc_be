@@ -61,11 +61,25 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody String email, String password)
     {return ResponseEntity.ok(userService.login(email, password));}
+    
+    // @PostMapping("/login")
+   // public ResponseEntity<String> loginUser(@RequestBody String email, String password)
+   // {return ResponseEntity.ok(userService.login(email, password));}
 
 
-//    @PostMapping("/login")
-//    public ResponseEntity<String> loginUser(@RequestBody String email, String password)
-//    {return ResponseEntity.ok(userService.login(email, password));}
+    @PostMapping(value = "/save")
+    public UserEntity saveUsers(@RequestBody UserEntity userEntity) {
+        if(userService.email_validator(userEntity) && userService.name_validator(userEntity) && userService.password_validator(userEntity)){
+            UserEntity user = new UserEntity();
+            user.setEmail(userEntity.getEmail());
+            user.setPassword(userEntity.getPassword());
+            user.setFirstName(userEntity.getFirstName());
+            user.setLastName(userEntity.getLastName());
+            user.setId(userEntity.getId());
+            return userService.saveUser(user);
+            }
+            return null;
+            }
 
     @PostMapping(value = "/register")
     public ResponseEntity<RegisterResponseDto> registerUser(@RequestBody RegisterRequestDto dto) {
