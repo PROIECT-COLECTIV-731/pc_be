@@ -66,10 +66,10 @@ class BookServiceImplTest {
                 2010, "someOtherLink", firstDomain, firstPublisher, List.of(), "Different description", 9.75F, List.of());
 
         firstUserEntity = new UserEntity(1L, "John", "Johnston", "john.don@ubbcluj.ro",
-                "1234","someName", List.of(), List.of());
+                "someName", List.of(), List.of(), "1234",true);
 
         secondUserEntity = new UserEntity(2L, "Some", "Guy", "some.guy@ubbcluj.ro",
-                "1234","someName", List.of(), List.of());
+                "someOtherName",  List.of(), List.of(), "123456",true);
 
         firstUserBookEntity = new UserBookEntity(new UserBookID(),firstUserEntity, firstEntity, date1);
         secondUserBookEntity = new UserBookEntity(new UserBookID(),firstUserEntity, secondEntity, date1);
