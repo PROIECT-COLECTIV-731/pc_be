@@ -5,11 +5,8 @@ import java.util.List;
 
 import com.example.project.dto.BookDTO;
 import com.example.project.dto.BookSearchDTO;
-import com.example.project.entity.DomainEntity;
-import com.example.project.entity.ReviewEntity;
-import com.example.project.entity.UserEntity;
+import com.example.project.entity.*;
 import com.example.project.repository.BookRepository;
-import com.example.project.entity.BookEntity;
 import com.example.project.repository.ReviewRepository;
 import com.example.project.repository.UserBookRepository;
 import com.example.project.repository.UserRepository;
@@ -28,6 +25,14 @@ public class BookServiceImpl implements BookService{
 
     @Autowired
     private UserBookRepository userBookRepository;
+
+
+
+    BookServiceImpl(BookRepository bookRepository, UserBookRepository userBookRepository){
+        this.bookRepository = bookRepository;
+        this.userBookRepository = userBookRepository;
+    }
+
 
     @Override
     public List<BookEntity> findAll() {
