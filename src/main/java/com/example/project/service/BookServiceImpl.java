@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class BookServiceImpl implements BookService{
+public class BookServiceImpl implements BookService {
     @Autowired
     private BookRepository bookRepository;
 
@@ -29,14 +29,13 @@ public class BookServiceImpl implements BookService{
     private UserBookRepository userBookRepository;
 
 
-
     @Override
     public List<BookEntity> findAll() {
         return this.bookRepository.findAll();
     }
 
     @Override
-    public BookEntity save(BookEntity book){
+    public BookEntity save(BookEntity book) {
         if (book != null)
             return bookRepository.save(book);
         return null;
@@ -76,9 +75,9 @@ public class BookServiceImpl implements BookService{
 
 
     @Override
-    public BookEntity findByISBN(Long ISBN){
-        for(BookEntity b: bookRepository.findAll()){
-            if(Objects.equals(b.getISBN(), ISBN)){
+    public BookEntity findByISBN(Long ISBN) {
+        for (BookEntity b : bookRepository.findAll()) {
+            if (Objects.equals(b.getISBN(), ISBN)) {
                 return b;
             }
         }
@@ -86,15 +85,14 @@ public class BookServiceImpl implements BookService{
     }
 
     public void delete(BookEntity book) {
-        if(book!=null)
-        {
+        if (book != null) {
             bookRepository.delete(book);
         }
     }
+
     @Override
     public void deleteAll(List<BookEntity> books) {
-        if(books.size()>0)
-        {
+        if (books.size() > 0) {
             books.forEach(this::delete);
         }
     }
@@ -106,7 +104,7 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public BookDTO convertEntityToDTO(BookEntity book) {
-        List<String>categories=new ArrayList<>();
+        List<String> categories = new ArrayList<>();
         book.getBookCategories().forEach(categoryEntity -> categories.add(categoryEntity.getName()));
         return BookDTO.builder().
                 ISBN(book.getISBN()).
@@ -123,8 +121,8 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public List<BookDTO> convertEntityListToDTOList(List<BookEntity> books) {
-        List<BookDTO>boookList=new ArrayList<>();
-        if(books!=null){
+        List<BookDTO> boookList = new ArrayList<>();
+        if (books != null) {
             books.forEach(bookEntity -> boookList.add(convertEntityToDTO(bookEntity)));
         }
         return boookList;
@@ -133,45 +131,53 @@ public class BookServiceImpl implements BookService{
     @Override
     public BookEntity findBookByISBN(Long isbn) {
 
-       return bookRepository.findAll().stream().filter(bookEntity -> bookEntity.getISBN().equals(isbn)).findFirst().orElse(null);
+        return bookRepository.findAll().stream().filter(bookEntity -> bookEntity.getISBN().equals(isbn)).findFirst().orElse(null);
 
     }
+
     @Override
     public List<String> sortBookTitlesAlphabetical() {
-        List<String>titles=new ArrayList<>();
+        List<String> titles = new ArrayList<>();
         findAll().forEach(bookEntity -> titles.add(bookEntity.getTitle()));
         return titles.stream().sorted().collect(Collectors.toList());
     }
 
     public String getNrUsersForABook(BookEntity book) {
-        List<UserEntity>user=new ArrayList<>();
-        userBookRepository.findAll().forEach(userBookEntity ->{if(Objects.equals(userBookEntity.getBookEntity().getId(), book.getId())){user.add(userBookEntity.getUserEntity());}});
+        List<UserEntity> user = new ArrayList<>();
+        userBookRepository.findAll().forEach(userBookEntity -> {
+            if (Objects.equals(userBookEntity.getBookEntity().getId(), book.getId())) {
+                user.add(userBookEntity.getUserEntity());
+            }
+        });
         return String.valueOf(user.size());
     }
+
     @Override
-    public Map<String,String> countUsersForAllBooks() {
-        List<BookEntity>allBooks=findAll();
-        Map<String,String>booksWithAmount=new LinkedHashMap<>();
-        allBooks.forEach(book -> booksWithAmount.put(book.getTitle(),getNrUsersForABook(book)));
+    public Map<String, String> countUsersForAllBooks() {
+        List<BookEntity> allBooks = findAll();
+        Map<String, String> booksWithAmount = new LinkedHashMap<>();
+        allBooks.forEach(book -> booksWithAmount.put(book.getTitle(), getNrUsersForABook(book)));
         return sortMap(booksWithAmount);
     }
 
     @Override
     public BookEntity update(BookDTO book) {
         BookEntity bookEntity = null;
-        if(book!= null){
+        if (book != null) {
             bookEntity = findBookByISBN(book.getISBN());
-            bookEntity.setISBN(book.getISBN());
-            bookEntity.setAuthor(book.getAuthor());
-            bookEntity.setDomain(findExistingDomain(book.getDomain()));
-            bookEntity.setContentLink(book.getContentLink());
-            bookEntity.setPublicationYear(book.getPublicationYear());
-            bookEntity.setRanking(book.getRanking());
-            bookEntity.setSummary(book.getSummary());
-            bookEntity.setPublisher(findExistingPublisher(book.getPublisher()));
-            bookEntity.setTitle(book.getTitle());
-            bookEntity.setBookCategories(findExistingCategories(book.getBookCategories()));
-            bookRepository.save(bookEntity);
+            if (bookEntity != null) {
+                bookEntity.setISBN(book.getISBN());
+                bookEntity.setAuthor(book.getAuthor());
+                bookEntity.setDomain(findExistingDomain(book.getDomain()));
+                bookEntity.setContentLink(book.getContentLink());
+                bookEntity.setPublicationYear(book.getPublicationYear());
+                bookEntity.setRanking(book.getRanking());
+                bookEntity.setSummary(book.getSummary());
+                bookEntity.setPublisher(findExistingPublisher(book.getPublisher()));
+                bookEntity.setTitle(book.getTitle());
+                bookEntity.setBookCategories(findExistingCategories(book.getBookCategories()));
+                bookRepository.save(bookEntity);
+            }
         }
 
         return bookEntity;
@@ -179,19 +185,20 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public BookEntity convertDTOToEntity(BookDTO bookDTO) {
-        List<CategoryEntity>categories;
+        List<CategoryEntity> categories;
         PublisherEntity publisher = findExistingPublisher(bookDTO.getPublisher());
-        if(publisher==null){
-            publisher=new PublisherEntity();
+        if (publisher == null) {
+            publisher = new PublisherEntity();
             publisher.setName(bookDTO.getPublisher());
         }
         publisherRepository.save(publisher);
-        DomainEntity domain=findExistingDomain(bookDTO.getDomain());
-        if(domain==null){
+        DomainEntity domain = findExistingDomain(bookDTO.getDomain());
+        if (domain == null) {
             domain = new DomainEntity();
-            domain.setName(bookDTO.getDomain());}
+            domain.setName(bookDTO.getDomain());
+        }
         domainRepository.save(domain);
-        categories=findExistingCategories(bookDTO.getBookCategories());
+        categories = findExistingCategories(bookDTO.getBookCategories());
         return BookEntity.builder().
                 ISBN(bookDTO.getISBN()).
                 author(bookDTO.getAuthor()).
@@ -205,57 +212,58 @@ public class BookServiceImpl implements BookService{
     }
 
 
-    public Map<String,String> sortMap(Map<String,String>map) {
-        Map<String,String>sortedMap=new LinkedHashMap<>();
+    public Map<String, String> sortMap(Map<String, String> map) {
+        Map<String, String> sortedMap = new LinkedHashMap<>();
         map.entrySet().stream()
-                .sorted(Map.Entry.<String,String>comparingByKey())
+                .sorted(Map.Entry.<String, String>comparingByKey())
                 .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
         return sortedMap;
     }
-    public DomainEntity findExistingDomain(String name){
+
+    public DomainEntity findExistingDomain(String name) {
         DomainEntity foundDomain;
-        try{
-         foundDomain=domainRepository.findByName(name);}
-        catch (Exception e){
-            foundDomain=null;
+        try {
+            foundDomain = domainRepository.findByName(name);
+        } catch (Exception e) {
+            foundDomain = null;
         }
         return foundDomain;
     }
 
-    public PublisherEntity findExistingPublisher(String name){
+    public PublisherEntity findExistingPublisher(String name) {
         PublisherEntity publisher;
-        try{
-            publisher=publisherRepository.findByName(name);}
-        catch (Exception e){
-            publisher=null;
+        try {
+            publisher = publisherRepository.findByName(name);
+        } catch (Exception e) {
+            publisher = null;
         }
         return publisher;
     }
 
-    public List<CategoryEntity> findExistingCategories(List<String> nameList){
-        List<CategoryEntity> categoryEntityList=new ArrayList<>();
-        nameList.forEach(categoryName->{if(findExistingCategory(categoryName)==null){
-            CategoryEntity category=new CategoryEntity();
-            category.setName(categoryName);
-            categoryEntityList.add(category);
-        }
-        else{
-            categoryEntityList.add(findExistingCategory(categoryName));
-        }});
+    public List<CategoryEntity> findExistingCategories(List<String> nameList) {
+        List<CategoryEntity> categoryEntityList = new ArrayList<>();
+        nameList.forEach(categoryName -> {
+            if (findExistingCategory(categoryName) == null) {
+                CategoryEntity category = new CategoryEntity();
+                category.setName(categoryName);
+                categoryEntityList.add(category);
+            } else {
+                categoryEntityList.add(findExistingCategory(categoryName));
+            }
+        });
         return categoryEntityList;
     }
 
-    public CategoryEntity findExistingCategory(String name){
+    public CategoryEntity findExistingCategory(String name) {
         CategoryEntity category;
-        try{
-            category=categoryRepository.findByName(name);}
-        catch (Exception e){
-            category=null;
+        try {
+            category = categoryRepository.findByName(name);
+        } catch (Exception e) {
+            category = null;
         }
         return category;
 
     }
-
 
 
 }
