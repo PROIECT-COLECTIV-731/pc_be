@@ -16,6 +16,7 @@ import com.example.project.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Base64;
@@ -23,7 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+
+@Controller
 @RequestMapping("/user")
 public class UserController {
     @Autowired
@@ -66,6 +68,13 @@ public class UserController {
    // public ResponseEntity<String> loginUser(@RequestBody String email, String password)
    // {return ResponseEntity.ok(userService.login(email, password));}
 
+
+    @GetMapping("/permission/{email}")
+    public ResponseEntity<String> getPermission(@PathVariable String email) {
+        return ResponseEntity.ok(this.userService.findByEmail(email).getPermission());
+    }
+
+=======
 
     @PostMapping(value = "/save")
     public UserEntity saveUsers(@RequestBody UserEntity userEntity) {
