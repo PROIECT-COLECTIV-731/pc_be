@@ -60,10 +60,6 @@ public class UserController {
     {return ResponseEntity.ok(userService.login(email, password));}
 
 
-    @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody String email, String password)
-    {return ResponseEntity.ok(userService.login(email, password));}
-
     @PostMapping(value = "/save")
     public UserEntity saveUsers(@RequestBody UserEntity userEntity) {
         if(userService.email_validator(userEntity) && userService.name_validator(userEntity) && userService.password_validator(userEntity)){

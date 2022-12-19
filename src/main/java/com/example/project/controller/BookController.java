@@ -53,7 +53,6 @@ public class BookController {
 
     @PostMapping("/update")
     public BookEntity updateBook(@RequestBody BookDTO dto) {
-        BookEntity bookEntity = bookService.convertDTOToEntity(dto);
-        return bookService.update(bookEntity);
+        return bookService.update(dto);
     }
 }

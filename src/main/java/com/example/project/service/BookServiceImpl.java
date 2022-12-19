@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.project.dto.BookDTO;
-import com.example.project.dto.BookSearchDTO;
 import com.example.project.entity.*;
 import com.example.project.repository.*;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Book;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,8 +21,9 @@ public class BookServiceImpl implements BookService{
     private DomainRepository domainRepository;
     @Autowired
     private PublisherRepository publisherRepository;
+
     @Autowired
-    private CategoryService categoryService;
+    private CategoryRepository categoryRepository;
 
     @Autowired
     private UserBookRepository userBookRepository;
@@ -159,34 +157,41 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public BookEntity update(BookEntity book) {
+    public BookEntity update(BookDTO book) {
         BookEntity bookEntity = null;
         if(book!= null){
             bookEntity = findBookByISBN(book.getISBN());
             bookEntity.setISBN(book.getISBN());
             bookEntity.setAuthor(book.getAuthor());
-            bookEntity.setDomain(book.getDomain());
+            bookEntity.setDomain(findExistingDomain(book.getDomain()));
             bookEntity.setContentLink(book.getContentLink());
             bookEntity.setPublicationYear(book.getPublicationYear());
             bookEntity.setRanking(book.getRanking());
             bookEntity.setSummary(book.getSummary());
-            bookEntity.setPublisher(book.getPublisher());
+            bookEntity.setPublisher(findExistingPublisher(book.getPublisher()));
             bookEntity.setTitle(book.getTitle());
-            bookEntity.setBookCategories(book.getBookCategories());
+            bookEntity.setBookCategories(findExistingCategories(book.getBookCategories()));
+            bookRepository.save(bookEntity);
         }
+
         return bookEntity;
     }
 
     @Override
     public BookEntity convertDTOToEntity(BookDTO bookDTO) {
-        List<CategoryEntity>categories=new ArrayList<>();
-        PublisherEntity publisher = new PublisherEntity();
-        publisher.setName(bookDTO.getPublisher());
+        List<CategoryEntity>categories;
+        PublisherEntity publisher = findExistingPublisher(bookDTO.getPublisher());
+        if(publisher==null){
+            publisher=new PublisherEntity();
+            publisher.setName(bookDTO.getPublisher());
+        }
         publisherRepository.save(publisher);
-        DomainEntity domain = new DomainEntity();
-        domain.setName(bookDTO.getDomain());
+        DomainEntity domain=findExistingDomain(bookDTO.getDomain());
+        if(domain==null){
+            domain = new DomainEntity();
+            domain.setName(bookDTO.getDomain());}
         domainRepository.save(domain);
-        bookDTO.getBookCategories().forEach(category -> categories.add(categoryService.findPublisherByName(category)));
+        categories=findExistingCategories(bookDTO.getBookCategories());
         return BookEntity.builder().
                 ISBN(bookDTO.getISBN()).
                 author(bookDTO.getAuthor()).
@@ -206,6 +211,49 @@ public class BookServiceImpl implements BookService{
                 .sorted(Map.Entry.<String,String>comparingByKey())
                 .forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
         return sortedMap;
+    }
+    public DomainEntity findExistingDomain(String name){
+        DomainEntity foundDomain;
+        try{
+         foundDomain=domainRepository.findByName(name);}
+        catch (Exception e){
+            foundDomain=null;
+        }
+        return foundDomain;
+    }
+
+    public PublisherEntity findExistingPublisher(String name){
+        PublisherEntity publisher;
+        try{
+            publisher=publisherRepository.findByName(name);}
+        catch (Exception e){
+            publisher=null;
+        }
+        return publisher;
+    }
+
+    public List<CategoryEntity> findExistingCategories(List<String> nameList){
+        List<CategoryEntity> categoryEntityList=new ArrayList<>();
+        nameList.forEach(categoryName->{if(findExistingCategory(categoryName)==null){
+            CategoryEntity category=new CategoryEntity();
+            category.setName(categoryName);
+            categoryEntityList.add(category);
+        }
+        else{
+            categoryEntityList.add(findExistingCategory(categoryName));
+        }});
+        return categoryEntityList;
+    }
+
+    public CategoryEntity findExistingCategory(String name){
+        CategoryEntity category;
+        try{
+            category=categoryRepository.findByName(name);}
+        catch (Exception e){
+            category=null;
+        }
+        return category;
+
     }
 
 

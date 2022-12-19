@@ -37,16 +37,15 @@ public class UserServiceImpl implements UserService{
         return userRepository.findAll().stream().filter(user->user.getUsername().equals(username)).findFirst().orElse(null);
     }
 
-    //gets expired the books of a user expired=the book was borrowed more than 4 days
 
     public List<UserBookEntity> getExpiredBooks(String username) {
         UserEntity foundUser=findUserByUserName(username);
         List<UserBookEntity>books=new ArrayList<>();
-        LocalDate todaysDate=LocalDate.now();
+        LocalDate todayDate=LocalDate.now();
 
         if(foundUser!=null)
         {
-            foundUser.getBooks().forEach(userBook->{if(userBook.getStartDate().plusDays(MAX_DAYS_TO_BORROW).isBefore(todaysDate)){books.add(userBook);}});
+            foundUser.getBooks().forEach(userBook->{if(userBook.getStartDate().plusDays(MAX_DAYS_TO_BORROW).isBefore(todayDate)){books.add(userBook);}});
         }
         return books;
     }
