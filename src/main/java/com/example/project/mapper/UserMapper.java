@@ -7,11 +7,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Mapper(componentModel="spring")
-
+@Component
 public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
@@ -21,7 +22,8 @@ public interface UserMapper {
             @Mapping(source = "firstName", target = "firstName"),
             @Mapping(source = "lastName", target = "lastName"),
             @Mapping(source = "email", target="email"),
-            @Mapping(source = "password", target="password")
+            @Mapping(source = "password", target="password"),
+            @Mapping(source = "permission", target="permission")
     })
     public UserEntity dtoToEntity(UserDto dto);
 
@@ -30,7 +32,8 @@ public interface UserMapper {
             @Mapping(source = "firstName", target = "firstName"),
             @Mapping(source = "lastName", target = "lastName"),
             @Mapping(source = "email", target ="email"),
-            @Mapping(source = "password", target="password")
+            @Mapping(source = "password", target="password"),
+            @Mapping(source = "permission", target="permission")
     })
     public UserDto entityToDto(UserEntity entity);
     public List<UserEntity> dtosToEntities(List<UserEntity> entities);

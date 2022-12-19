@@ -1,21 +1,31 @@
 package com.example.project.controller;
 
 import com.example.project.dto.BookDTO;
+import com.example.project.dto.RegisterRequestDto;
+import com.example.project.dto.RegisterResponseDto;
 import com.example.project.dto.UserDto;
+import com.example.project.entity.UserEntity;
 import com.example.project.entity.BookEntity;
+import com.example.project.entity.ResponseForUserBooks;
 import com.example.project.entity.UserBookEntity;
 import com.example.project.entity.UserEntity;
 import com.example.project.service.BookService;
 import com.example.project.service.UserBookService;
 import com.example.project.service.UserService;
+import com.example.project.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Base64;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-@RestController
+
+@Controller
 @RequestMapping("/user")
 public class UserController {
     @Autowired
@@ -26,20 +36,23 @@ public class UserController {
     private BookService bookService;
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<UserDto>> getAll() {
+    public ResponseEntity<List<UserDto>> getAllUser() {
         return ResponseEntity.ok(userService.findAll());
     }
-    
-    //gets the books of a user and deleted the expired ones
-    @GetMapping("/user-books")
-    public ResponseEntity<List<BookDTO>> getBooks(@RequestParam String username) {
+
+    @GetMapping("/books")
+    public ResponseEntity<ResponseForUserBooks> getBooks(@RequestParam String username) {
             List<UserBookEntity>expiredBooks=userService.getExpiredBooks(username);
             userBookService.deleteUserBooks(expiredBooks);
             UserEntity foundUser=userService.findUserByUserName(username);
             if(foundUser!=null){
             List<BookDTO>books=bookService.convertEntityListToDTOList(userBookService.getUserBooks(foundUser));
-            if(books.size()>0)
-                return ResponseEntity.ok().body(books);}
+            if(books.size()>0){
+                List<String>expiredTitles=new ArrayList<>();
+                expiredBooks.forEach(book->expiredTitles.add(book.getBookEntity().getTitle()));
+                return ResponseEntity.ok().body(new ResponseForUserBooks(books,expiredTitles,"Updated List"));
+            }
+            }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
@@ -50,5 +63,40 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody String email, String password)
     {return ResponseEntity.ok(userService.login(email, password));}
+    
+    // @PostMapping("/login")
+   // public ResponseEntity<String> loginUser(@RequestBody String email, String password)
+   // {return ResponseEntity.ok(userService.login(email, password));}
 
+
+    @GetMapping("/permission/{email}")
+    public ResponseEntity<String> getPermission(@PathVariable String email) {
+        return ResponseEntity.ok(this.userService.findByEmail(email).getPermission());
+    }
+
+=======
+
+    @PostMapping(value = "/save")
+    public UserEntity saveUsers(@RequestBody UserEntity userEntity) {
+        if(userService.email_validator(userEntity) && userService.name_validator(userEntity) && userService.password_validator(userEntity)){
+            UserEntity user = new UserEntity();
+            user.setEmail(userEntity.getEmail());
+            user.setPassword(userEntity.getPassword());
+            user.setFirstName(userEntity.getFirstName());
+            user.setLastName(userEntity.getLastName());
+            user.setId(userEntity.getId());
+            return userService.saveUser(user);
+            }
+            return null;
+            }
+
+    @PostMapping(value = "/register")
+    public ResponseEntity<RegisterResponseDto> registerUser(@RequestBody RegisterRequestDto dto) {
+        try{
+            return new ResponseEntity<>(userService.saveUser(dto),HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(409).build();
+        }
+    }
 }
