@@ -6,7 +6,9 @@ import java.util.List;
 import com.example.project.dto.BookDTO;
 import com.example.project.dto.BookSearchDTO;
 import com.example.project.entity.*;
+import org.apache.catalina.User;
 import com.example.project.repository.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,14 @@ public class BookServiceImpl implements BookService {
 
     @Autowired
     private UserBookRepository userBookRepository;
+
+
+
+    BookServiceImpl(BookRepository bookRepository, UserBookRepository userBookRepository){
+        this.bookRepository = bookRepository;
+        this.userBookRepository = userBookRepository;
+    }
+
 
     @Override
     public List<BookEntity> findAll() {

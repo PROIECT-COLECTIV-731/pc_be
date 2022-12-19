@@ -1,6 +1,8 @@
 package com.example.project.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -9,6 +11,8 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "Users")
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserEntity {
 
     @Id
