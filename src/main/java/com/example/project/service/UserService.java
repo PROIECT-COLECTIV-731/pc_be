@@ -16,6 +16,7 @@ public interface UserService {
     UserDto findByEmailAndPassword(String email, String password);
     String login(String email, String password);
 
+    UserDto findByEmail(String email);
 
     boolean email_validator(RegisterRequestDto dto);
     boolean name_validator(UserEntity userEntity);
