@@ -41,5 +41,8 @@ public class UserEntity {
 
     @Column
     private boolean AccountVerified;
+
+    @Column
+    private String permission;
 }
 
