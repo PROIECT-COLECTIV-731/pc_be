@@ -2,6 +2,7 @@ package com.example.project.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 @Entity
 @Data
 @AllArgsConstructor
+@Getter
 @Table(name = "Borrow")
 public class BorrowEntity {
 
