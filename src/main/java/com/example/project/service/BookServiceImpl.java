@@ -1,13 +1,10 @@
 package com.example.project.service;
 
 import com.example.project.dto.BookDTO;
-import com.example.project.entity.DomainEntity;
-import com.example.project.entity.ReviewEntity;
-import com.example.project.entity.UserEntity;
+import com.example.project.dto.DomainDto;
+import com.example.project.dto.PublisherDto;
+import com.example.project.entity.*;
 import com.example.project.repository.BookRepository;
-import com.example.project.entity.BookEntity;
-import com.example.project.repository.ReviewRepository;
-import com.example.project.repository.UserRepository;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,12 +60,15 @@ public class BookServiceImpl implements BookService{
                 author(book.getAuthor()).
                 title(book.getTitle()).
                 ranking(book.getRanking())
-                .publisher(book.getPublisher().getName()).
-                publicationYear(book.getPublicationYear()).
-                bookCategories(categories)
-                .domain(book.getDomain().getName())
+                .publisher(convertPublisherToDTO(book.getPublisher())).
+                publicationYear(book.getPublicationYear())
+                .bookCategories(book.getBookCategories().stream().map(CategoryEntity::getName).toList())
+                .summary(book.getSummary())
+                .domain(convertDomainToDTO(book.getDomain()))
                 .build();
     }
+
+
 
     @Override
     public List<BookDTO> convertEntityListToDTOList(List<BookEntity> books) {
@@ -86,6 +86,17 @@ public class BookServiceImpl implements BookService{
 
     }
 
+    @Override
+    public PublisherDto convertPublisherToDTO(PublisherEntity publisherEntity) {
+        return PublisherDto.builder()
+                        .name(publisherEntity.getName())
+                .build();
+    }
+
+    @Override
+    public DomainDto convertDomainToDTO(DomainEntity domainEntity) {
+        return DomainDto.builder().name(domainEntity.getName()).build();
+    }
 
 
 }

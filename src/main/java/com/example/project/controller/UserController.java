@@ -3,20 +3,16 @@ package com.example.project.controller;
 import com.example.project.dto.BookDTO;
 import com.example.project.dto.UserDto;
 import com.example.project.entity.UserEntity;
-import com.example.project.entity.BookEntity;
 import com.example.project.entity.ResponseForUserBooks;
 import com.example.project.entity.UserBookEntity;
-import com.example.project.entity.UserEntity;
 import com.example.project.service.BookService;
 import com.example.project.service.UserBookService;
 import com.example.project.service.UserService;
-import com.example.project.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Base64;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,10 +55,6 @@ public class UserController {
     public ResponseEntity<String> login(@RequestBody String email, String password)
     {return ResponseEntity.ok(userService.login(email, password));}
 
-
-    @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody String email, String password)
-    {return ResponseEntity.ok(userService.login(email, password));}
 
     @PostMapping(value = "/save")
     public UserEntity saveUsers(@RequestBody UserEntity userEntity) {

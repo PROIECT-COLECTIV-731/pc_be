@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/books")
+@CrossOrigin(origins = "*")
 public class BookController {
 
     @Autowired
@@ -21,6 +22,12 @@ public class BookController {
     public ResponseEntity<List<BookEntity>> getAll() {
         return ResponseEntity.ok(this.bookService.findAll());
     }
+
+    @GetMapping("/books")
+    public ResponseEntity<List<BookDTO>> getAllDTO() {
+        return ResponseEntity.ok(this.bookService.convertEntityListToDTOList(this.bookService.findAll()));
+    }
+
     @PostMapping("/add")
     public ResponseEntity<BookEntity> saveBook(@RequestBody BookEntity book) {
         return ResponseEntity.ok(this.bookService.save(book));
