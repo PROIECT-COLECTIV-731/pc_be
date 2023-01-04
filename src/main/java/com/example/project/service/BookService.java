@@ -15,7 +15,6 @@ public interface BookService {
     public List<BookEntity> findAll();
     public BookEntity save(BookEntity book);
 
-     BookDTO findById(Long id);
     public BookEntity findByISBN(Long ISBN);
     public BookDTO findById(Long id);
     public List<BookSearchDTO> search(String word);

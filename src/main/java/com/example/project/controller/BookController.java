@@ -33,6 +33,7 @@ public class BookController {
     @GetMapping("/books")
     public ResponseEntity<List<BookDTO>> getAllDTO() {
         return ResponseEntity.ok(this.bookService.convertEntityListToDTOList(this.bookService.findAll()));
+        }
     @GetMapping("/search")
     public List<BookSearchDTO> searchBook(@RequestParam String word) {
         return this.bookService.search(word);
