@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @ResponseBody
+@CrossOrigin(origins="*")
 @RequestMapping("/forgotPassword")
 public class ForgotPasswordController {
 

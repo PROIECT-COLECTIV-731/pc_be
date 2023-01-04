@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins="*")
+@RequestMapping("/review")
 public class ReviewController {
     private ReviewService reviewService;
     private BookService bookService;

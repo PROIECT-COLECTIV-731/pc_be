@@ -1,6 +1,8 @@
 package com.example.project.controller;
 
 import com.example.project.dto.BookDTO;
+import com.example.project.dto.RegisterRequestDto;
+import com.example.project.dto.RegisterResponseDto;
 import com.example.project.dto.UserDto;
 import com.example.project.entity.UserEntity;
 import com.example.project.entity.ResponseForUserBooks;
@@ -11,12 +13,15 @@ import com.example.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.*;
 
-@RestController
+
+@Controller
 @RequestMapping("/user")
 public class UserController {
     @Autowired
@@ -55,6 +60,11 @@ public class UserController {
     public ResponseEntity<String> login(@RequestBody String email, String password)
     {return ResponseEntity.ok(userService.login(email, password));}
 
+    @GetMapping("/permission/{email}")
+    public ResponseEntity<String> getPermission(@PathVariable String email) {
+        return ResponseEntity.ok(this.userService.findByEmail(email).getPermission());
+    }
+
 
     @PostMapping(value = "/save")
     public UserEntity saveUsers(@RequestBody UserEntity userEntity) {
@@ -66,7 +76,30 @@ public class UserController {
             user.setLastName(userEntity.getLastName());
             user.setId(userEntity.getId());
             return userService.saveUser(user);
+
+
+    @PostMapping(value = "/register")
+    public ResponseEntity<RegisterResponseDto> registerUser(@RequestBody RegisterRequestDto dto) {
+        try{
+            return new ResponseEntity<>(userService.saveUser(dto),HttpStatus.OK);
         }
-        return null;
+        catch (Exception e) {
+            return ResponseEntity.status(409).build();
+        }
+    }
+
+    @GetMapping("/checked-out-books")
+    public ResponseEntity<List<BookDTO>> bookTitlesForUser(@RequestParam String username) {
+        UserEntity user = userService.findUserByUserName(username);
+        if(user != null) {
+            List<BookDTO>books=bookService.convertEntityListToDTOList(userBookService.getUserBooks(user));
+            books.sort(Comparator.comparing(BookDTO::getTitle));
+
+            if (books.size() > 0) {
+                return ResponseEntity.ok().body(books);
+            }
+
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 }

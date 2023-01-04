@@ -1,18 +1,31 @@
 package com.example.project.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+//import javax.validation.constraints.Max;
+//import javax.validation.constraints.Min;
+
 import lombok.ToString;
 import lombok.Getter;
+
+import lombok.*;
+
 
 import javax.persistence.*;
 import java.util.List;
 
 
+
 @Entity
 @Data
+
 @ToString
+@Builder
 @Getter
 @Table(name = "Book")
 @AllArgsConstructor
@@ -38,12 +51,16 @@ public class BookEntity {
     @Column(name = "publication_year")
     private int publicationYear;
 
+    @NotNull
+    @Column(name = "content_link")
+    private String contentLink;
+
     @ManyToOne
-    @JoinColumn(name="domain_id", nullable=false)
+    @JoinColumn(name="domain_id")
     private DomainEntity domain;
 
     @ManyToOne
-    @JoinColumn(name="publisher_id", nullable=false)
+    @JoinColumn(name="publisher_id")
     private PublisherEntity publisher;
 
     @ManyToMany
@@ -59,8 +76,10 @@ public class BookEntity {
     @Column(name = "ranking")
     private float ranking;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "bookEntity")
     private List<UserBookEntity>books;
+
 }
 
 //    a admin user
@@ -74,4 +93,6 @@ public class BookEntity {
 //        - categories (recommendations for specific courses - from category catalogue, optional, many)
 //        - summary - string, optional
 //        - ranking (from a scale from 1 to 5) - read only, default 0
+
 //        That i can create the library of books
+
