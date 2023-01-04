@@ -163,6 +163,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public DomainDto convertDomainToDTO(DomainEntity domainEntity) {
         return DomainDto.builder().name(domainEntity.getName()).build();
+    }
 
     public List<String> sortBookTitlesAlphabetical() {
         List<String> titles = new ArrayList<>();
@@ -217,13 +218,13 @@ public class BookServiceImpl implements BookService {
         PublisherEntity publisher = findExistingPublisher(bookDTO.getPublisher());
         if (publisher == null) {
             publisher = new PublisherEntity();
-            publisher.setName(bookDTO.getPublisher());
+            publisher.setName(bookDTO.getPublisher().getName());
         }
         publisherRepository.save(publisher);
         DomainEntity domain = findExistingDomain(bookDTO.getDomain());
         if (domain == null) {
             domain = new DomainEntity();
-            domain.setName(bookDTO.getDomain());
+            domain.setName(bookDTO.getDomain().getName());
         }
         domainRepository.save(domain);
         categories = findExistingCategories(bookDTO.getBookCategories());
@@ -248,20 +249,20 @@ public class BookServiceImpl implements BookService {
         return sortedMap;
     }
 
-    public DomainEntity findExistingDomain(String name) {
+    public DomainEntity findExistingDomain(DomainDto domainDto) {
         DomainEntity foundDomain;
         try {
-            foundDomain = domainRepository.findByName(name);
+            foundDomain = domainRepository.findByName(domainDto.getName());
         } catch (Exception e) {
             foundDomain = null;
         }
         return foundDomain;
     }
 
-    public PublisherEntity findExistingPublisher(String name) {
+    public PublisherEntity findExistingPublisher(PublisherDto publisherDto) {
         PublisherEntity publisher;
         try {
-            publisher = publisherRepository.findByName(name);
+            publisher = publisherRepository.findByName(publisherDto.getName());
         } catch (Exception e) {
             publisher = null;
         }
