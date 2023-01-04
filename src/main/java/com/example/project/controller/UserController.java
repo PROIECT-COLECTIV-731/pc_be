@@ -5,20 +5,19 @@ import com.example.project.dto.RegisterRequestDto;
 import com.example.project.dto.RegisterResponseDto;
 import com.example.project.dto.UserDto;
 import com.example.project.entity.UserEntity;
-import com.example.project.entity.BookEntity;
 import com.example.project.entity.ResponseForUserBooks;
 import com.example.project.entity.UserBookEntity;
-import com.example.project.entity.UserEntity;
 import com.example.project.service.BookService;
 import com.example.project.service.UserBookService;
 import com.example.project.service.UserService;
-import com.example.project.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.*;
 
 
@@ -67,6 +66,18 @@ public class UserController {
     }
 
 
+    @PostMapping(value = "/save")
+    public UserEntity saveUsers(@RequestBody UserEntity userEntity) {
+        if(userService.email_validator(userEntity) && userService.name_validator(userEntity) && userService.password_validator(userEntity)){
+            UserEntity user = new UserEntity();
+            user.setEmail(userEntity.getEmail());
+            user.setPassword(userEntity.getPassword());
+            user.setFirstName(userEntity.getFirstName());
+            user.setLastName(userEntity.getLastName());
+            user.setId(userEntity.getId());
+            return userService.saveUser(user);
+
+
     @PostMapping(value = "/register")
     public ResponseEntity<RegisterResponseDto> registerUser(@RequestBody RegisterRequestDto dto) {
         try{
@@ -87,6 +98,7 @@ public class UserController {
             if (books.size() > 0) {
                 return ResponseEntity.ok().body(books);
             }
+
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }

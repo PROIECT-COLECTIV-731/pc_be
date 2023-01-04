@@ -1,5 +1,10 @@
 package com.example.project.service;
 
+import com.example.project.dto.BookDTO;
+import com.example.project.dto.DomainDto;
+import com.example.project.dto.PublisherDto;
+import com.example.project.entity.*;
+import com.example.project.repository.BookRepository;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,14 +122,19 @@ public class BookServiceImpl implements BookService {
                 author(book.getAuthor()).
                 title(book.getTitle()).
                 ranking(book.getRanking())
-                .publisher(book.getPublisher().getName()).
-                publicationYear(book.getPublicationYear()).
-                bookCategories(categories)
-                .domain(book.getDomain().getName())
+                .publisher(convertPublisherToDTO(book.getPublisher())).
+                publicationYear(book.getPublicationYear())
+                .bookCategories(book.getBookCategories().stream().map(CategoryEntity::getName).toList())
+         
+                .domain(convertDomainToDTO(book.getDomain()))     
+    
                 .contentLink(book.getContentLink())
                 .summary(book.getSummary())
+
                 .build();
     }
+
+
 
     @Override
     public List<BookDTO> convertEntityListToDTOList(List<BookEntity> books) {
@@ -143,6 +153,17 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+
+    public PublisherDto convertPublisherToDTO(PublisherEntity publisherEntity) {
+        return PublisherDto.builder()
+                        .name(publisherEntity.getName())
+                .build();
+    }
+
+    @Override
+    public DomainDto convertDomainToDTO(DomainEntity domainEntity) {
+        return DomainDto.builder().name(domainEntity.getName()).build();
+
     public List<String> sortBookTitlesAlphabetical() {
         List<String> titles = new ArrayList<>();
         findAll().forEach(bookEntity -> titles.add(bookEntity.getTitle()));
@@ -269,6 +290,7 @@ public class BookServiceImpl implements BookService {
             category = null;
         }
         return category;
+
 
     }
 
