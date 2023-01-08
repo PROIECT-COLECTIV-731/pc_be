@@ -23,6 +23,7 @@ import java.util.*;
 
 @Controller
 @RequestMapping("/user")
+@CrossOrigin(origins = "*")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -81,6 +82,7 @@ public class UserController {
 //    }
 
     @PostMapping(value = "/register")
+
     public ResponseEntity<RegisterResponseDto> registerUser(@RequestBody RegisterRequestDto dto) {
         try{
             return new ResponseEntity<>(userService.saveUser(dto),HttpStatus.OK);
