@@ -10,6 +10,7 @@ import com.example.project.entity.BookEntity;
 
 import com.example.project.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,10 +41,16 @@ public class BookController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity saveBook(@RequestBody BookEntity book) {
-        if (bookService.findByISBN(book.getISBN()) != null)
+    public ResponseEntity saveBook(@RequestBody BookDTO book) {
+        BookEntity bookEntity=bookService.findByISBN(book.getISBN());
+        if (bookEntity!=null)
             return ResponseEntity.badRequest().body("Error! Book with ISBN " + book.getISBN() + " already exists!");
-        return ResponseEntity.ok(this.bookService.save(book));
+        BookEntity foundBook;
+        try{foundBook=this.bookService.save(bookService.convertDTOToEntity(book));}
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        return ResponseEntity.ok(foundBook);
     }
     @CrossOrigin(origins = "*")
     @GetMapping("/getBooksWithUsersNr")
@@ -59,7 +66,16 @@ public class BookController {
     }
 
     @PostMapping("/update")
-    public BookEntity updateBook(@RequestBody BookDTO dto) {
-        return bookService.update(dto);
+    public ResponseEntity updateBook(@RequestBody BookDTO dto) {
+        BookEntity book;
+        try {
+           book=bookService.update(dto);
+        } catch (Exception e)
+        {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        if(book!=null)
+        {return ResponseEntity.ok(book);}
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book could not be found");
     }
 }

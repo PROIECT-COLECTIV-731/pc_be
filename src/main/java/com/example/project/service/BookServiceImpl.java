@@ -197,14 +197,18 @@ public class BookServiceImpl implements BookService {
             if (bookEntity != null) {
                 bookEntity.setISBN(book.getISBN());
                 bookEntity.setAuthor(book.getAuthor());
-                bookEntity.setDomain(findExistingDomain(book.getDomain()));
                 bookEntity.setContentLink(book.getContentLink());
                 bookEntity.setPublicationYear(book.getPublicationYear());
                 bookEntity.setRanking(book.getRanking());
                 bookEntity.setSummary(book.getSummary());
-                bookEntity.setPublisher(findExistingPublisher(book.getPublisher()));
                 bookEntity.setTitle(book.getTitle());
-                bookEntity.setBookCategories(findExistingCategories(book.getBookCategories()));
+                try{
+                bookEntity.setPublisher(findExistingPublisher(book.getPublisher()));
+                bookEntity.setDomain(findExistingDomain(book.getDomain()));
+                bookEntity.setBookCategories(findExistingCategories(book.getBookCategories()));}
+                catch (Exception e){
+                    throw  new RuntimeException(e.getMessage());
+                }
                 bookRepository.save(bookEntity);
             }
         }
@@ -217,14 +221,12 @@ public class BookServiceImpl implements BookService {
         List<CategoryEntity> categories;
         PublisherEntity publisher = findExistingPublisher(bookDTO.getPublisher());
         if (publisher == null) {
-            publisher = new PublisherEntity();
-            publisher.setName(bookDTO.getPublisher().getName());
+            throw new RuntimeException("Publisher "+bookDTO.getPublisher().getName()+" does not exists");
         }
         publisherRepository.save(publisher);
         DomainEntity domain = findExistingDomain(bookDTO.getDomain());
         if (domain == null) {
-            domain = new DomainEntity();
-            domain.setName(bookDTO.getDomain().getName());
+            throw new RuntimeException("Domain"+bookDTO.getDomain().getName()+" does not exists");
         }
         domainRepository.save(domain);
         categories = findExistingCategories(bookDTO.getBookCategories());
@@ -236,6 +238,7 @@ public class BookServiceImpl implements BookService {
                 .publisher(publisher).
                 publicationYear(bookDTO.getPublicationYear()).
                 bookCategories(categories)
+                .contentLink(bookDTO.getContentLink())
                 .domain(domain)
                 .build();
     }
@@ -273,9 +276,7 @@ public class BookServiceImpl implements BookService {
         List<CategoryEntity> categoryEntityList = new ArrayList<>();
         nameList.forEach(categoryName -> {
             if (findExistingCategory(categoryName) == null) {
-                CategoryEntity category = new CategoryEntity();
-                category.setName(categoryName);
-                categoryEntityList.add(category);
+                throw new RuntimeException("Category "+categoryName+ " does not exists");
             } else {
                 categoryEntityList.add(findExistingCategory(categoryName));
             }
