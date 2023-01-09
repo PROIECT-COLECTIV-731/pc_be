@@ -5,26 +5,25 @@ import com.example.project.dto.RegisterRequestDto;
 import com.example.project.dto.RegisterResponseDto;
 import com.example.project.dto.UserDto;
 import com.example.project.entity.UserEntity;
-import com.example.project.entity.BookEntity;
 import com.example.project.entity.ResponseForUserBooks;
 import com.example.project.entity.UserBookEntity;
-import com.example.project.entity.UserEntity;
 import com.example.project.service.BookService;
 import com.example.project.service.UserBookService;
 import com.example.project.service.UserService;
-import com.example.project.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Base64;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-@RestController
+
+@Controller
 @RequestMapping("/user")
+@CrossOrigin(origins = "*")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -62,12 +61,28 @@ public class UserController {
     public ResponseEntity<String> login(@RequestBody String email, String password)
     {return ResponseEntity.ok(userService.login(email, password));}
 
+    @GetMapping("/permission/{email}")
+    public ResponseEntity<String> getPermission(@PathVariable String email) {
+        return ResponseEntity.ok(this.userService.findByEmail(email).getPermission());
+    }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<String> loginUser(@RequestBody String email, String password)
-//    {return ResponseEntity.ok(userService.login(email, password));}
+
+//    @PostMapping(value = "/save")
+//    public UserEntity saveUsers(@RequestBody UserEntity userEntity) {
+//        if (userService.email_validator(userEntity) && userService.name_validator(userEntity) && userService.password_validator(userEntity)) {
+//            UserEntity user = new UserEntity();
+//            user.setEmail(userEntity.getEmail());
+//            user.setPassword(userEntity.getPassword());
+//            user.setFirstName(userEntity.getFirstName());
+//            user.setLastName(userEntity.getLastName());
+//            user.setId(userEntity.getId());
+//        }
+//            return userService.saveUser(user);
+//
+//    }
 
     @PostMapping(value = "/register")
+
     public ResponseEntity<RegisterResponseDto> registerUser(@RequestBody RegisterRequestDto dto) {
         try{
             return new ResponseEntity<>(userService.saveUser(dto),HttpStatus.OK);
@@ -75,5 +90,20 @@ public class UserController {
         catch (Exception e) {
             return ResponseEntity.status(409).build();
         }
+    }
+
+    @GetMapping("/checked-out-books")
+    public ResponseEntity<List<BookDTO>> bookTitlesForUser(@RequestParam String username) {
+        UserEntity user = userService.findUserByUserName(username);
+        if(user != null) {
+            List<BookDTO>books=bookService.convertEntityListToDTOList(userBookService.getUserBooks(user));
+            books.sort(Comparator.comparing(BookDTO::getTitle));
+
+            if (books.size() > 0) {
+                return ResponseEntity.ok().body(books);
+            }
+
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 }

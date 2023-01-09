@@ -6,18 +6,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Data
-
+@Table(name = "Category")
 
 @AllArgsConstructor
 @NoArgsConstructor
-
-@Table(name = "Category")
+@Getter
 public class CategoryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

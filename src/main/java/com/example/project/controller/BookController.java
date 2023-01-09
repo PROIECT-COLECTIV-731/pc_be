@@ -18,6 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/books")
+@CrossOrigin(origins = "*")
 public class BookController {
 
     @Autowired
@@ -28,6 +29,11 @@ public class BookController {
         return ResponseEntity.ok(this.bookService.findAll());
     }
 
+
+    @GetMapping("/books")
+    public ResponseEntity<List<BookDTO>> getAllDTO() {
+        return ResponseEntity.ok(this.bookService.convertEntityListToDTOList(this.bookService.findAll()));
+        }
     @GetMapping("/search")
     public List<BookSearchDTO> searchBook(@RequestParam String word) {
         return this.bookService.search(word);
@@ -50,5 +56,10 @@ public class BookController {
     public ResponseEntity<BookDTO> findBookById(@PathVariable Long id) {
         return ResponseEntity.ok(this.bookService.findById(id));
 
+    }
+
+    @PostMapping("/update")
+    public BookEntity updateBook(@RequestBody BookDTO dto) {
+        return bookService.update(dto);
     }
 }

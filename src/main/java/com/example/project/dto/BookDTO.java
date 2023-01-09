@@ -16,9 +16,9 @@ public class BookDTO {
 
     private int publicationYear;
 
-    private String domain;
+    private DomainDto domain;
 
-    private String publisher;
+    private PublisherDto publisher;
 
     private List<String> bookCategories;
 
