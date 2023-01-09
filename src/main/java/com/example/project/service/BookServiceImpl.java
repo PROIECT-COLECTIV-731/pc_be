@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.Flow;
 import java.util.stream.Collectors;
 
 @Service
@@ -202,13 +203,19 @@ public class BookServiceImpl implements BookService {
                 bookEntity.setRanking(book.getRanking());
                 bookEntity.setSummary(book.getSummary());
                 bookEntity.setTitle(book.getTitle());
+                PublisherEntity publisher;
+                List<CategoryEntity>categoryEntityList;
+                DomainEntity domain;
                 try{
-                bookEntity.setPublisher(findExistingPublisher(book.getPublisher()));
-                bookEntity.setDomain(findExistingDomain(book.getDomain()));
-                bookEntity.setBookCategories(findExistingCategories(book.getBookCategories()));}
+                    publisher= findExistingPublisher(book.getPublisher());
+                    domain=findExistingDomain(book.getDomain());
+                    categoryEntityList=findExistingCategories(book.getBookCategories());}
                 catch (Exception e){
                     throw  new RuntimeException(e.getMessage());
                 }
+                bookEntity.setPublisher(publisher);
+                bookEntity.setBookCategories(categoryEntityList);
+                bookEntity.setDomain(domain);
                 bookRepository.save(bookEntity);
             }
         }
