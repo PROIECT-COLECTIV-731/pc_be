@@ -34,7 +34,8 @@ public class BookController {
     @GetMapping("/books")
     public ResponseEntity<List<BookDTO>> getAllDTO() {
         return ResponseEntity.ok(this.bookService.convertEntityListToDTOList(this.bookService.findAll()));
-        }
+    }
+
     @GetMapping("/search")
     public List<BookSearchDTO> searchBook(@RequestParam String word) {
         return this.bookService.search(word);
@@ -42,19 +43,23 @@ public class BookController {
 
     @PostMapping("/add")
     public ResponseEntity saveBook(@RequestBody BookDTO book) {
-        BookEntity bookEntity=bookService.findByISBN(book.getISBN());
-        if (bookEntity!=null)
+
+        BookEntity bookEntity = bookService.findByISBN(book.getISBN());
+        if (bookEntity != null)
             return ResponseEntity.badRequest().body("Error! Book with ISBN " + book.getISBN() + " already exists!");
         BookEntity foundBook;
-        try{foundBook=this.bookService.save(bookService.convertDTOToEntity(book));}
-        catch (Exception e){
+        try {
+            foundBook = bookService.convertDTOToEntity(book);
+            this.bookService.save(foundBook);
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
         return ResponseEntity.ok(foundBook);
     }
+
     @CrossOrigin(origins = "*")
     @GetMapping("/getBooksWithUsersNr")
-    public Map<String,String> getBorrowNrForBooks() {
+    public Map<String, String> getBorrowNrForBooks() {
         return bookService.countUsersForAllBooks();
     }
 
@@ -69,13 +74,13 @@ public class BookController {
     public ResponseEntity updateBook(@RequestBody BookDTO dto) {
         BookEntity book;
         try {
-           book=bookService.update(dto);
-        } catch (Exception e)
-        {
+            book = bookService.update(dto);
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-        if(book!=null)
-        {return ResponseEntity.ok(book);}
+        if (book != null) {
+            return ResponseEntity.ok(book);
+        }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Book could not be found");
     }
 }

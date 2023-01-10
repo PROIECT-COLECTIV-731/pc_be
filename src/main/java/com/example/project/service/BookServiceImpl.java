@@ -5,6 +5,7 @@ import com.example.project.dto.DomainDto;
 import com.example.project.dto.PublisherDto;
 import com.example.project.entity.*;
 import com.example.project.repository.BookRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +38,7 @@ public class BookServiceImpl implements BookService {
     private UserBookRepository userBookRepository;
 
 
-
-    BookServiceImpl(BookRepository bookRepository, UserBookRepository userBookRepository){
+    BookServiceImpl(BookRepository bookRepository, UserBookRepository userBookRepository) {
         this.bookRepository = bookRepository;
         this.userBookRepository = userBookRepository;
     }
@@ -56,7 +56,7 @@ public class BookServiceImpl implements BookService {
         return null;
     }
 
-    public BookSearchDTO convertToDTO(BookEntity book){
+    public BookSearchDTO convertToDTO(BookEntity book) {
         return BookSearchDTO.builder()
                 .ISBN(book.getISBN())
                 .author(book.getAuthor())
@@ -66,19 +66,19 @@ public class BookServiceImpl implements BookService {
                 .build();
     }
 
-    public List<BookSearchDTO> convertListToDTO(List<BookEntity> bookEntities){
+    public List<BookSearchDTO> convertListToDTO(List<BookEntity> bookEntities) {
         return bookEntities.stream().map(this::convertToDTO).collect(Collectors.toList());
 
     }
 
-    public List<BookSearchDTO> search(String word){
-        if(word == null || word.isBlank() || word.isEmpty())
+    public List<BookSearchDTO> search(String word) {
+        if (word == null || word.isBlank() || word.isEmpty())
             return convertListToDTO(this.bookRepository.findAll());
         List<BookSearchDTO> returnList = new ArrayList<>();
 
 
-        for(BookEntity book : this.bookRepository.findAll()){
-            if(book.toString().contains(word))
+        for (BookEntity book : this.bookRepository.findAll()) {
+            if (book.toString().contains(word))
                 returnList.add(convertToDTO(book));
 
         }
@@ -126,15 +126,14 @@ public class BookServiceImpl implements BookService {
                 .publisher(convertPublisherToDTO(book.getPublisher())).
                 publicationYear(book.getPublicationYear())
                 .bookCategories(book.getBookCategories().stream().map(CategoryEntity::getName).toList())
-         
-                .domain(convertDomainToDTO(book.getDomain()))     
-    
+
+                .domain(convertDomainToDTO(book.getDomain()))
+
                 .contentLink(book.getContentLink())
                 .summary(book.getSummary())
 
                 .build();
     }
-
 
 
     @Override
@@ -157,7 +156,7 @@ public class BookServiceImpl implements BookService {
 
     public PublisherDto convertPublisherToDTO(PublisherEntity publisherEntity) {
         return PublisherDto.builder()
-                        .name(publisherEntity.getName())
+                .name(publisherEntity.getName())
                 .build();
     }
 
@@ -204,14 +203,14 @@ public class BookServiceImpl implements BookService {
                 bookEntity.setSummary(book.getSummary());
                 bookEntity.setTitle(book.getTitle());
                 PublisherEntity publisher;
-                List<CategoryEntity>categoryEntityList;
+                List<CategoryEntity> categoryEntityList;
                 DomainEntity domain;
-                try{
-                    publisher= findExistingPublisher(book.getPublisher());
-                    domain=findExistingDomain(book.getDomain());
-                    categoryEntityList=findExistingCategories(book.getBookCategories());}
-                catch (Exception e){
-                    throw  new RuntimeException(e.getMessage());
+                try {
+                    publisher = findExistingPublisher(book.getPublisher());
+                    domain = findExistingDomain(book.getDomain());
+                    categoryEntityList = findExistingCategories(book.getBookCategories());
+                } catch (Exception e) {
+                    throw new RuntimeException(e.getMessage());
                 }
                 bookEntity.setPublisher(publisher);
                 bookEntity.setBookCategories(categoryEntityList);
@@ -228,12 +227,12 @@ public class BookServiceImpl implements BookService {
         List<CategoryEntity> categories;
         PublisherEntity publisher = findExistingPublisher(bookDTO.getPublisher());
         if (publisher == null) {
-            throw new RuntimeException("Publisher "+bookDTO.getPublisher().getName()+" does not exists");
+            throw new RuntimeException("Publisher " + bookDTO.getPublisher().getName() + " does not exists");
         }
         publisherRepository.save(publisher);
         DomainEntity domain = findExistingDomain(bookDTO.getDomain());
         if (domain == null) {
-            throw new RuntimeException("Domain"+bookDTO.getDomain().getName()+" does not exists");
+            throw new RuntimeException("Domain" + bookDTO.getDomain().getName() + " does not exists");
         }
         domainRepository.save(domain);
         categories = findExistingCategories(bookDTO.getBookCategories());
@@ -245,6 +244,7 @@ public class BookServiceImpl implements BookService {
                 .publisher(publisher).
                 publicationYear(bookDTO.getPublicationYear()).
                 bookCategories(categories)
+                .summary(bookDTO.getSummary())
                 .contentLink(bookDTO.getContentLink())
                 .domain(domain)
                 .build();
@@ -283,7 +283,7 @@ public class BookServiceImpl implements BookService {
         List<CategoryEntity> categoryEntityList = new ArrayList<>();
         nameList.forEach(categoryName -> {
             if (findExistingCategory(categoryName) == null) {
-                throw new RuntimeException("Category "+categoryName+ " does not exists");
+                throw new RuntimeException("Category " + categoryName + " does not exists");
             } else {
                 categoryEntityList.add(findExistingCategory(categoryName));
             }
